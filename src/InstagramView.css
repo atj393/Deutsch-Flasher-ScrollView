@@ -319,8 +319,6 @@
   height: 100%;
   margin: 0;
   position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background-color: var(--card-bg);
   border-radius: 0;
   box-shadow: none;
@@ -338,9 +336,7 @@
   }
 }
 
-.flashcard.instagram-style.flipped {
-  transform: rotateY(180deg);
-}
+/* Removed 3D transform - using opacity-based flip instead */
 
 .instagram-style .card-content {
   height: 100%;
@@ -353,7 +349,6 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
   padding: 40px 30px;
   display: flex;
   justify-content: center;
@@ -361,6 +356,7 @@
   flex-direction: column;
   text-align: center;
   border-radius: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 @media (min-width: 768px) {
@@ -371,8 +367,26 @@
   }
 }
 
+/* Default state - show front, hide back */
+.instagram-style .front {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .instagram-style .back {
-  transform: rotateY(180deg);
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Flipped state - hide front, show back */
+.flashcard.instagram-style.flipped .front {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.flashcard.instagram-style.flipped .back {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Card Status Badge */
