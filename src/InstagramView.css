@@ -313,17 +313,18 @@
   background: transparent;
 }
 
-/* Full Screen Flashcard - Mobile Optimized */
+/* Full Screen Flashcard - Mobile Optimized with 3D Flip */
 .flashcard.instagram-style {
   width: 100%;
   height: 100%;
   margin: 0;
   position: relative;
-  background-color: var(--card-bg);
+  background-color: transparent;
   border-radius: 0;
   box-shadow: none;
   border: none;
   cursor: pointer;
+  perspective: 1000px;
 }
 
 @media (min-width: 768px) {
@@ -331,19 +332,25 @@
     max-width: 700px;
     height: 450px;
     border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-primary);
+    perspective: 1200px;
   }
 }
 
-/* Removed 3D transform - using opacity-based flip instead */
-
+/* 3D Card Container */
 .instagram-style .card-content {
   height: 100%;
   width: 100%;
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
 }
 
+/* Flipped state rotates the entire card container */
+.flashcard.instagram-style.flipped .card-content {
+  transform: rotateY(180deg);
+}
+
+/* Card faces */
 .instagram-style .front,
 .instagram-style .back {
   position: absolute;
@@ -356,7 +363,10 @@
   flex-direction: column;
   text-align: center;
   border-radius: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 768px) {
@@ -364,30 +374,21 @@
   .instagram-style .back {
     padding: 30px;
     border-radius: 15px;
+    border: 1px solid var(--border-primary);
   }
 }
 
-/* Default state - show front, hide back */
+/* Front face (German) - default visible */
 .instagram-style .front {
-  opacity: 1;
-  transform: scale(1);
+  transform: rotateY(0deg);
 }
 
+/* Back face (English) - rotated 180deg to be hidden initially */
 .instagram-style .back {
-  opacity: 0;
-  transform: scale(0.95);
+  transform: rotateY(180deg);
 }
 
-/* Flipped state - hide front, show back */
-.flashcard.instagram-style.flipped .front {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.flashcard.instagram-style.flipped .back {
-  opacity: 1;
-  transform: scale(1);
-}
+/* Simple 3D flip animation - clean and smooth */
 
 /* Card Status Badge */
 .instagram-style .card-status {

@@ -1,5 +1,5 @@
 // src/components/FullScreenCard.jsx
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 const FullScreenCard = ({ 
   card, 
@@ -55,7 +55,7 @@ const FullScreenCard = ({
       onTouchEnd={handleTouchEnd}
     >
       <div className="card-content">
-        {/* Front of card */}
+        {/* Front of card - German */}
         <div className="front">
           <span className={`card-status status-${card.status || 'new'}`} title="Card status">
             {card.status || 'new'}
@@ -104,7 +104,7 @@ const FullScreenCard = ({
           </div>
         </div>
         
-        {/* Back of card */}
+        {/* Back of card - English */}
         <div className="back">
           <div className="english-word">{card.meaning}</div>
           <div className="english-sentence">{card.sentenceMeaning}</div>
