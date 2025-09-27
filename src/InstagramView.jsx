@@ -38,7 +38,7 @@ const InstagramView = ({
   const observers = useRef(new Map());
   
   // Touch/swipe handling state
-  const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
+  const [touchStart, setTouchStart] = useState({ x: 0, y: 0, time: 0 });
   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   
@@ -186,67 +186,90 @@ const InstagramView = ({
     if (!container) return;
 
     const handleTouchStartNonPassive = (e) => {
-      e.preventDefault();
+      // Only prevent default for significant swipes, allow taps to work
+      const startTime = Date.now();
       setTouchStart({
         x: e.targetTouches[0].clientX,
         y: e.targetTouches[0].clientY,
+        time: startTime,
       });
       setTouchEnd({ x: 0, y: 0 });
       setCurrentTransform(0);
-      setIsSwipingActive(true);
+      setIsSwipingActive(false); // Don't set to true immediately
     };
 
     const handleTouchMoveNonPassive = (e) => {
-      e.preventDefault();
-      
       if (!touchStart.x && !touchStart.y) return;
       
       const currentY = e.targetTouches[0].clientY;
       const deltaY = currentY - touchStart.y;
+      const absY = Math.abs(deltaY);
       
-      // Update real-time transform following finger
-      const dampingFactor = 0.7; // Makes swipe feel more controlled
-      const transform = deltaY * dampingFactor;
+      // Only start preventing default and swiping if movement is significant
+      if (absY > 10) {
+        e.preventDefault();
+        setIsSwipingActive(true);
+        
+        // Update real-time transform following finger
+        const dampingFactor = 0.7; // Makes swipe feel more controlled
+        const transform = deltaY * dampingFactor;
+        
+        // Limit transform to reasonable bounds
+        const maxTransform = window.innerHeight * 0.8;
+        const boundedTransform = Math.max(-maxTransform, Math.min(maxTransform, transform));
+        
+        setCurrentTransform(boundedTransform);
+        
+        // Prepare next card when swipe is significant
+        const absTransform = Math.abs(boundedTransform);
+        if (absTransform > 50 && !nextCardId) {
+          const currentIndex = getCurrentCardIndex();
+          let nextIndex;
+          let direction;
+          
+          if (boundedTransform < 0) {
+            // Swiping up - next card
+            nextIndex = currentIndex < filteredWords.length - 1 ? currentIndex + 1 : 0;
+            direction = 'up';
+          } else {
+            // Swiping down - previous card
+            nextIndex = currentIndex > 0 ? currentIndex - 1 : filteredWords.length - 1;
+            direction = 'down';
+          }
+          
+          setNextCardId(filteredWords[nextIndex].id);
+          setSwipeDirection(direction);
+        }
+      }
       
-      // Limit transform to reasonable bounds
-      const maxTransform = window.innerHeight * 0.8;
-      const boundedTransform = Math.max(-maxTransform, Math.min(maxTransform, transform));
-      
-      setCurrentTransform(boundedTransform);
       setTouchEnd({
         x: e.targetTouches[0].clientX,
         y: currentY,
       });
-      
-      // Prepare next card when swipe is significant
-      const absTransform = Math.abs(boundedTransform);
-      if (absTransform > 50 && !nextCardId) {
-        const currentIndex = getCurrentCardIndex();
-        let nextIndex;
-        let direction;
-        
-        if (boundedTransform < 0) {
-          // Swiping up - next card
-          nextIndex = currentIndex < filteredWords.length - 1 ? currentIndex + 1 : 0;
-          direction = 'up';
-        } else {
-          // Swiping down - previous card
-          nextIndex = currentIndex > 0 ? currentIndex - 1 : filteredWords.length - 1;
-          direction = 'down';
-        }
-        
-        setNextCardId(filteredWords[nextIndex].id);
-        setSwipeDirection(direction);
-      }
     };
 
     const handleTouchEndNonPassive = () => {
+      const endTime = Date.now();
+      const touchDuration = endTime - (touchStart.time || 0);
+      const deltaY = touchEnd.y - touchStart.y;
+      const absY = Math.abs(deltaY);
+      
+      // Check if this was a tap (short duration, minimal movement)
+      const isTap = touchDuration < 300 && absY < 10;
+      
+      if (isTap && !isSwipingActive) {
+        // This was a tap - trigger card flip
+        console.log('Detected tap - flipping card');
+        handleCardFlip();
+        setCurrentTransform(0);
+        return;
+      }
+      
       if (!isSwipingActive) return;
       
       setIsSwipingActive(false);
       
       const swipeThreshold = 80; // Minimum distance to trigger navigation
-      const velocityThreshold = 30; // Consider swipe velocity for more natural feel
       
       console.log('Touch end - transform:', currentTransform);
       

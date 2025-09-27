@@ -458,10 +458,10 @@
 
 /* Simple 3D flip animation - clean and smooth */
 
-/* Card Status Badge */
+/* Card Status Badge - Right Bottom Corner */
 .instagram-style .card-status {
   position: absolute;
-  top: 20px;
+  bottom: 20px;
   left: 20px;
   padding: 8px 16px;
   border-radius: 20px;
@@ -852,10 +852,10 @@
   }
 }
 
-/* Card Progress Indicator */
+/* Card Progress Indicator - Bottom Position */
 .card-progress-indicator {
   position: fixed;
-  top: 80px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 500;
@@ -876,7 +876,7 @@
 
 @media (min-width: 768px) {
   .card-progress-indicator {
-    top: 90px;
+    bottom: 30px;
   }
 }
 
@@ -903,7 +903,7 @@
 
 @media (max-width: 768px) {
   .card-progress-indicator {
-    top: 15px;
+    bottom: 15px;
     padding: 6px 12px;
     font-size: 12px;
   }
