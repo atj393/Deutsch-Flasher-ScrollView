@@ -10,7 +10,7 @@
  * Built with React and modern web technologies for optimal learning experience.
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   calculateNextInterval,
@@ -22,12 +22,16 @@ import { recordNewWordLearned } from "./statisticsManager";
 import AnalyticsDashboard from "./AnalyticsDashboard";
 // Import Instagram view component
 import InstagramView from "./InstagramView";
+// Import components
+import BurgerMenu from "./components/BurgerMenu";
+import SettingsPanel from "./components/SettingsPanel";
 // Import initial words data from JSON file
 import initialWordsData from "./data/initialWords.json";
 
 const FlashCardApp = () => {
-  // Function to transform JSON data into full word objects with SRS structure
-  const createInitialWords = () => {
+  // Create initial words once per session using useMemo to prevent recreation
+  const initialWords = useMemo(() => {
+    console.log("Loading initial words data - this should only happen once per session");
     return initialWordsData.map((wordData) => ({
       id: uuidv4(),
       word: wordData.word,
@@ -48,7 +52,13 @@ const FlashCardApp = () => {
       totalReviews: 0,
       mistakeCount: 0,
     }));
-  };
+  }, []); // Empty dependency array ensures this only runs once per component mount
+
+  // Function to get fresh copy of initial words (for resets)
+  const createInitialWords = useCallback(() => {
+    console.log("Creating fresh copy of initial words");
+    return initialWords.map(word => ({ ...word, id: uuidv4() }));
+  }, [initialWords]);
 
   const [words, setWords] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -104,19 +114,16 @@ const FlashCardApp = () => {
           setWords(loadedWords);
         } else {
           console.log("Data structure mismatch, loading fresh data");
-          const freshWords = createInitialWords();
-          setWords(freshWords);
+          setWords(createInitialWords());
         }
       } catch (error) {
         console.error("Error parsing saved data:", error);
-        const freshWords = createInitialWords();
-        setWords(freshWords);
+        setWords(createInitialWords());
       }
     } else {
-      const freshWords = createInitialWords();
-      setWords(freshWords);
+      setWords(createInitialWords());
     }
-  }, []);
+  }, [createInitialWords]);
 
   // Save to localStorage whenever words change
   useEffect(() => {
@@ -423,15 +430,14 @@ const FlashCardApp = () => {
     );
     
     if (confirmReset) {
-      const freshWords = createInitialWords();
-      setWords(freshWords);
+      setWords(createInitialWords());
       setCurrentCardIndex(0);
       setIsFlipped(false);
       setSearchTerm("");
       localStorage.removeItem("flashcards");
       alert("Data has been reset to the original state.");
     }
-  }, []);
+  }, [createInitialWords]);
 
   // Load theme from localStorage on startup
   useEffect(() => {
@@ -507,100 +513,17 @@ const FlashCardApp = () => {
   return (
     <div className={`app ${theme}`}>
       <div className="header">
-        <h1>Flashcard Deutscher</h1>
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
-        >
-          <span className="material-icons">
-            {theme === "light" ? "dark_mode" : "light_mode"}
-          </span>
-        </button>
-        <div className="mode-selector">
-          <button
-            className={studyMode === "random" ? "active" : ""}
-            onClick={() => {
-              setStudyMode("random");
-              setCurrentCardIndex(0);
-              setIsFlipped(false);
-              setSessionStartTime(Date.now());
-              setSessionStats({
-                wordsStudied: 0,
-                correctAnswers: 0,
-                wrongAnswers: 0,
-              });
-              // Reset card history for new random session
-              setCardHistory([]);
-              setCurrentHistoryIndex(-1);
-            }}
-          >
-            <span className="material-icons">shuffle</span>
-            Random
-          </button>
-          <button
-            className={studyMode === "new" ? "active" : ""}
-            onClick={() => {
-              setStudyMode("new");
-              setCurrentCardIndex(0);
-              setIsFlipped(false);
-              setSessionStartTime(Date.now());
-              setSessionStats({
-                wordsStudied: 0,
-                correctAnswers: 0,
-                wrongAnswers: 0,
-              });
-            }}
-          >
-            <span className="material-icons">fiber_new</span>
-            New
-          </button>
-          <button
-            className={studyMode === "learning" ? "active" : ""}
-            onClick={() => {
-              setStudyMode("learning");
-              setCurrentCardIndex(0);
-              setIsFlipped(false);
-              setSessionStartTime(Date.now());
-              setSessionStats({
-                wordsStudied: 0,
-                correctAnswers: 0,
-                wrongAnswers: 0,
-              });
-            }}
-          >
-            <span className="material-icons">school</span>
-            Learning
-          </button>
-          <button
-            className={studyMode === "learned" ? "active" : ""}
-            onClick={() => {
-              setStudyMode("learned");
-              setCurrentCardIndex(0);
-              setIsFlipped(false);
-              setSessionStartTime(Date.now());
-              setSessionStats({
-                wordsStudied: 0,
-                correctAnswers: 0,
-                wrongAnswers: 0,
-              });
-            }}
-          >
-            <span className="material-icons">check_circle</span>
-            Learned
-          </button>
-          <button
-            className={studyMode === "browse" ? "active" : ""}
-            onClick={() => {
-              setStudyMode("browse");
-              setCurrentCardIndex(0);
-              setSearchTerm("");
-              setIsFlipped(false);
-            }}
-          >
-            <span className="material-icons">search</span>
-            Browse
-          </button>
+        {/* Left side - App Title */}
+        <div className="header-left">
+          <h1>Flashcard Deutscher</h1>
+        </div>
+
+        {/* Right side - Burger Menu */}
+        <div className="header-right">
+          <BurgerMenu 
+            isOpen={showAnalytics}
+            onClick={() => setShowAnalytics(!showAnalytics)}
+          />
         </div>
         {showAnalytics && (
           <div className="session-info">
@@ -642,10 +565,30 @@ const FlashCardApp = () => {
         setSortBy={setSortBy}
       />
 
+      {/* Settings Panel - Navigation and configuration options */}
+      <SettingsPanel
+        isOpen={showAnalytics}
+        onClose={() => setShowAnalytics(false)}
+        studyMode={studyMode}
+        setStudyMode={setStudyMode}
+        theme={theme}
+        toggleTheme={toggleTheme}
+        stats={stats}
+        showAnalytics={showAnalytics}
+        setShowAnalytics={setShowAnalytics}
+        resetData={resetData}
+        setIsFlipped={setIsFlipped}
+        setCurrentCardIndex={setCurrentCardIndex}
+        setSessionStartTime={setSessionStartTime}
+        setSessionStats={setSessionStats}
+        setCardHistory={setCardHistory}
+        setCurrentHistoryIndex={setCurrentHistoryIndex}
+      />
+      
       {/* Analytics Dashboard - Comprehensive learning insights and progress tracking */}
       <AnalyticsDashboard
         words={words}
-        isVisible={showAnalytics}
+        isVisible={showAnalytics && studyMode === 'analytics'}
         onClose={() => setShowAnalytics(false)}
       />
     </div>

@@ -105,90 +105,45 @@
   transition: all 0.3s ease;
 }
 
-/* Header Styles */
+/* Header Styles - Clean Mobile First Design */
 .header {
   background: var(--bg-primary);
-  border-bottom: 2px solid var(--border-primary);
-  padding: 15px 20px;
-  position: relative;
+  border-bottom: 1px solid var(--border-primary);
+  padding: 16px 20px;
+  position: sticky;
+  top: 0;
   z-index: 100;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
-.header h1 {
-  margin: 0 0 15px 0;
+/* Header Left - App Title */
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.header-left h1 {
+  margin: 0;
   color: var(--text-heading);
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
-  text-align: center;
+  text-align: left;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: var(--bg-controls);
-  border: 2px solid var(--border-secondary);
-  border-radius: 8px;
-  padding: 8px;
-  cursor: pointer;
-  color: var(--text-primary);
-  transition: all 0.2s ease;
+/* Header Right - Burger Menu */
+.header-right {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
 }
 
-.theme-toggle .material-icons {
-  font-size: 20px;
-}
-
-.theme-toggle:hover {
-  background: var(--bg-secondary);
-  border-color: var(--border-accent);
-}
-
-/* Mode Selector */
-.mode-selector {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.mode-selector button {
-  background: var(--bg-controls);
-  border: 2px solid var(--border-secondary);
-  border-radius: 8px;
-  padding: 8px 12px;
-  cursor: pointer;
-  color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 80px;
-  justify-content: center;
-}
-
-.mode-selector button:hover {
-  background: var(--bg-secondary);
-  border-color: var(--border-accent);
-}
-
-.mode-selector button.active {
-  background: var(--btn-primary);
-  border-color: var(--btn-primary);
-  color: white;
-}
-
-.mode-selector button .material-icons {
-  font-size: 16px;
-}
+/* Clean header - all navigation moved to burger menu */
 
 /* Session Info */
 .session-info {
@@ -212,32 +167,26 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .header {
-    padding: 10px 15px;
+    padding: 12px 16px;
+    min-height: 60px;
   }
   
-  .header h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .theme-toggle {
-    top: 10px;
-    right: 15px;
-    width: 36px;
-    height: 36px;
-  }
-  
-  .mode-selector {
-    gap: 6px;
-  }
-  
-  .mode-selector button {
-    padding: 6px 10px;
-    font-size: 13px;
-    min-width: 70px;
-  }
-  
-  .mode-selector button .material-icons {
-    font-size: 14px;
+  .header-left h1 {
+    font-size: 18px;
   }
 }
+
+/* Simple clean design with burger menu navigation */
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 12px;
+  }
+  
+  .header-left h1 {
+    font-size: 16px;
+  }
+}
+
+/* Header complete - clean and minimal */

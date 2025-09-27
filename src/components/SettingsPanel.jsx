@@ -15,7 +15,9 @@ const SettingsPanel = ({
   setIsFlipped,
   setCurrentCardIndex,
   setSessionStartTime,
-  setSessionStats
+  setSessionStats,
+  setCardHistory,
+  setCurrentHistoryIndex
 }) => {
   
   const handleModeChange = (mode) => {
@@ -28,6 +30,12 @@ const SettingsPanel = ({
       correctAnswers: 0,
       wrongAnswers: 0,
     });
+    
+    // Reset card history for random mode
+    if (mode === 'random' && setCardHistory && setCurrentHistoryIndex) {
+      setCardHistory([]);
+      setCurrentHistoryIndex(-1);
+    }
   };
 
   const handleBackdropClick = (e) => {
