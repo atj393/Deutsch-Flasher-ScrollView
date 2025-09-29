@@ -40,6 +40,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .burger-menu-btn .material-icons {
@@ -51,6 +52,7 @@
     background: var(--bg-secondary);
     border-color: var(--border-accent);
     transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .burger-menu-btn.active {
@@ -78,6 +80,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
 .search-btn .material-icons {
@@ -89,6 +92,7 @@
     background: var(--bg-secondary);
     border-color: var(--border-accent);
     transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Desktop positioning and sizing */
@@ -918,7 +922,7 @@
     line-height: 1.6;
     color: var(--text-secondary);
     margin-top: 25px;
-    max-width: 90%;
+    max-width: 70%;
     position: relative;
 }
 
@@ -947,7 +951,7 @@
     font-size: 20px;
     line-height: 1.6;
     color: var(--text-secondary);
-    max-width: 90%;
+    max-width: 70%;
 }
 
 @media (min-width: 768px) {
@@ -1121,21 +1125,25 @@
 .dark .search-btn {
     background: var(--bg-controls);
     border-color: var(--border-secondary);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .dark .search-btn:hover {
     background: var(--bg-secondary);
     border-color: var(--border-accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .dark .burger-menu-btn {
     background: var(--bg-controls);
     border-color: var(--border-secondary);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .dark .burger-menu-btn:hover {
     background: var(--bg-secondary);
     border-color: var(--border-accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .dark .insta-card-controls .card-rating-btn {

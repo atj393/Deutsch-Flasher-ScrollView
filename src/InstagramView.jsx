@@ -163,13 +163,107 @@ const InstagramView = () => {
         filtered = words.sort(() => Math.random() - 0.5);
       }
     } else if (studyMode === "new") {
-      filtered = words.filter((word) => word.status === null);
+      // New Words: Pure new cards + SRS priority for unrated cards
+      const newCards = words.filter((word) => word.status === null || word.totalReviews === 0);
+      
+      // Sort new cards by creation date (oldest first) to ensure systematic learning
+      filtered = newCards.sort((a, b) => {
+        const dateA = new Date(a.createdDate || 0);
+        const dateB = new Date(b.createdDate || 0);
+        return dateA - dateB;
+      });
+      
     } else if (studyMode === "learning") {
-      filtered = words.filter((word) => word.status === "learning");
+      // Viewed Words: SRS-smart ordering for cards in learning phase
+      const learningCards = words.filter((word) => word.status === "learning");
+      
+      // Prioritize by SRS schedule and difficulty
+      filtered = learningCards.sort((a, b) => {
+        const today = new Date();
+        
+        // Cards due/overdue get highest priority
+        const aIsDue = a.nextReview && new Date(a.nextReview) <= today;
+        const bIsDue = b.nextReview && new Date(b.nextReview) <= today;
+        
+        if (aIsDue && !bIsDue) return -1;
+        if (!aIsDue && bIsDue) return 1;
+        
+        // Among due cards, prioritize by how overdue they are
+        if (aIsDue && bIsDue) {
+          const aOverdue = today - new Date(a.nextReview);
+          const bOverdue = today - new Date(b.nextReview);
+          return bOverdue - aOverdue; // More overdue first
+        }
+        
+        // For non-due cards, prioritize by difficulty (lower ease factor = harder = higher priority)
+        const aEase = a.easeFactor || 2.5;
+        const bEase = b.easeFactor || 2.5;
+        return aEase - bEase; // Lower ease factor (harder) first
+      });
+      
     } else if (studyMode === "review") {
-      filtered = words.filter((word) => word.status === "review");
+      // Difficult Words: SRS-smart ordering for review cards
+      const reviewCards = words.filter((word) => word.status === "review");
+      
+      // Prioritize difficult cards by SRS metrics
+      filtered = reviewCards.sort((a, b) => {
+        const today = new Date();
+        
+        // Overdue difficult cards get absolute priority
+        const aIsDue = a.nextReview && new Date(a.nextReview) <= today;
+        const bIsDue = b.nextReview && new Date(b.nextReview) <= today;
+        
+        if (aIsDue && !bIsDue) return -1;
+        if (!aIsDue && bIsDue) return 1;
+        
+        // Among due cards, sort by difficulty metrics
+        if (aIsDue && bIsDue) {
+          // More mistakes = higher priority
+          const aMistakes = a.mistakeCount || 0;
+          const bMistakes = b.mistakeCount || 0;
+          if (aMistakes !== bMistakes) return bMistakes - aMistakes;
+          
+          // Lower ease factor = harder = higher priority
+          const aEase = a.easeFactor || 2.5;
+          const bEase = b.easeFactor || 2.5;
+          return aEase - bEase;
+        }
+        
+        // For future cards, still prioritize by difficulty
+        const aMistakes = a.mistakeCount || 0;
+        const bMistakes = b.mistakeCount || 0;
+        if (aMistakes !== bMistakes) return bMistakes - aMistakes;
+        
+        return (a.easeFactor || 2.5) - (b.easeFactor || 2.5);
+      });
+      
     } else if (studyMode === "learned") {
-      filtered = words.filter((word) => word.status === "learned");
+      // Learned Words: SRS-based maintenance review
+      const learnedCards = words.filter((word) => word.status === "learned");
+      
+      // Focus on learned cards that need maintenance review
+      filtered = learnedCards.sort((a, b) => {
+        const today = new Date();
+        
+        // Due learned cards get priority (maintenance review)
+        const aIsDue = a.nextReview && new Date(a.nextReview) <= today;
+        const bIsDue = b.nextReview && new Date(b.nextReview) <= today;
+        
+        if (aIsDue && !bIsDue) return -1;
+        if (!aIsDue && bIsDue) return 1;
+        
+        // Among due cards, prioritize by interval (shorter intervals = need more review)
+        if (aIsDue && bIsDue) {
+          const aInterval = a.interval || 1;
+          const bInterval = b.interval || 1;
+          return aInterval - bInterval; // Shorter interval first
+        }
+        
+        // For future cards, show recently learned first (shorter intervals)
+        const aInterval = a.interval || 1;
+        const bInterval = b.interval || 1;
+        return aInterval - bInterval;
+      });
     }
 
     setFilteredWords(filtered);

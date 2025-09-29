@@ -12488,14 +12488,6 @@
     "sentenceMeaning": "The weather is nice today."
   },
   {
-    "word": "sich sonnen",
-    "article": "",
-    "type": "verb",
-    "sentence": "Am Strand sonne ich mich.",
-    "meaning": "to sunbathe",
-    "sentenceMeaning": "I sunbathe at the beach."
-  },
-  {
     "word": "Sonne",
     "article": "die",
     "type": "noun",
@@ -12672,14 +12664,6 @@
     "sentenceMeaning": "We have dinner at the inn."
   },
   {
-    "word": "Gaststätte",
-    "article": "die",
-    "type": "noun",
-    "sentence": "Die Gaststätte hat viele Gäste.",
-    "meaning": "restaurant / pub",
-    "sentenceMeaning": "The restaurant has many guests."
-  },
-  {
     "word": "Gepäck",
     "article": "das",
     "type": "noun",
@@ -12830,14 +12814,6 @@
     "sentence": "Ich buche im Reisebüro.",
     "meaning": "travel agent’s",
     "sentenceMeaning": "I book at the travel agent's."
-  },
-  {
-    "word": "Reisebus",
-    "article": "der",
-    "type": "noun",
-    "sentence": "Der Reisebus fährt morgen früh.",
-    "meaning": "coach",
-    "sentenceMeaning": "The coach leaves early tomorrow."
   },
   {
     "word": "reisen",
@@ -13006,14 +12982,6 @@
     "sentence": "Das Zimmer ist groß.",
     "meaning": "room",
     "sentenceMeaning": "The room is big."
-  },
-  {
-    "word": "Zimmer frei",
-    "article": "",
-    "type": "phrase",
-    "sentence": "Das Hotel hat Zimmer frei.",
-    "meaning": "rooms available",
-    "sentenceMeaning": "The hotel has rooms available."
   },
   {
     "word": "Zimmermädchen",
@@ -13832,14 +13800,6 @@
     "sentenceMeaning": "My father gave me good advice."
   },
   {
-    "word": "raten",
-    "article": "",
-    "type": "verb",
-    "sentence": "Ich rate dir, früh zu schlafen.",
-    "meaning": "to advise / guess",
-    "sentenceMeaning": "I advise you to sleep early."
-  },
-  {
     "word": "recyceln",
     "article": "",
     "type": "verb",
@@ -13870,14 +13830,6 @@
     "sentence": "Die Regierung plant neue Gesetze.",
     "meaning": "government",
     "sentenceMeaning": "The government is planning new laws."
-  },
-  {
-    "word": "retten",
-    "article": "",
-    "type": "verb",
-    "sentence": "Der Hund wurde aus dem Fluss gerettet.",
-    "meaning": "to save / rescue",
-    "sentenceMeaning": "The dog was rescued from the river."
   },
   {
     "word": "Rettung",
@@ -13918,14 +13870,6 @@
     "sentence": "Ich schulde dir noch zehn Euro.",
     "meaning": "to owe",
     "sentenceMeaning": "I still owe you ten euros."
-  },
-  {
-    "word": "schuldig",
-    "article": "",
-    "type": "adjective",
-    "sentence": "Der Angeklagte wurde schuldig gesprochen.",
-    "meaning": "guilty / owing",
-    "sentenceMeaning": "The defendant was found guilty."
   },
   {
     "word": "schützen",
@@ -16360,14 +16304,6 @@
     "sentenceMeaning": "I have a question."
   },
   {
-    "word": "fragen",
-    "article": "",
-    "type": "verb",
-    "sentence": "Frag ihn!",
-    "meaning": "to ask",
-    "sentenceMeaning": "Ask him!"
-  },
-  {
     "word": "gar nicht",
     "article": "",
     "type": "adverb",
@@ -16438,13 +16374,5 @@
     "sentence": "Ich bin glücklich.",
     "meaning": "happy",
     "sentenceMeaning": "I am happy."
-  },
-  {
-    "word": "leid tun",
-    "article": "",
-    "type": "expression",
-    "sentence": "Es tut mir leid.",
-    "meaning": "I'm sorry",
-    "sentenceMeaning": "I am sorry."
   }
 ]

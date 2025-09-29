@@ -99,7 +99,7 @@ const SettingsPanel = ({
         <div className="settings-section study-modes-section">
           <div className="section-header">
             <h3><span className="material-icons">gps_fixed</span> Study Modes</h3>
-            <p className="section-desc">Choose your learning approach - each mode uses SRS algorithm</p>
+            <p className="section-desc">All modes now use intelligent SRS scheduling for optimal learning efficiency</p>
           </div>
           <div className="mode-grid study-modes">
             <button
@@ -124,9 +124,9 @@ const SettingsPanel = ({
                 <span className="material-icons">auto_awesome</span>
               </div>
               <div className="mode-info">
-                <h4>New Words</h4>
-                <p>Shows ONLY words you've never seen before - completely fresh vocabulary that you haven't viewed yet</p>
-                <div className="mode-stats">Never viewed • {stats.new || 0} cards available</div>
+                <h4>New Words (SRS)</h4>
+                <p>Fresh vocabulary ordered systematically - oldest first to ensure consistent learning progression through new material</p>
+                <div className="mode-stats">Systematic order • {stats.new || 0} cards available</div>
               </div>
             </button>
             
@@ -138,9 +138,9 @@ const SettingsPanel = ({
                 <span className="material-icons">visibility</span>
               </div>
               <div className="mode-info">
-                <h4>Viewed Words</h4>
-                <p>Shows ONLY words you've seen but haven't rated yet - cards that moved from new to viewed state</p>
-                <div className="mode-stats">Seen but unrated • {stats.learning || 0} cards to rate</div>
+                <h4>Viewed Words (SRS)</h4>
+                <p>Intelligent review of learning cards - prioritizes overdue and difficult words first, then by SRS schedule</p>
+                <div className="mode-stats">SRS prioritized • {stats.learning || 0} cards to rate</div>
               </div>
             </button>
             
@@ -152,9 +152,9 @@ const SettingsPanel = ({
                 <span className="material-icons">priority_high</span>
               </div>
               <div className="mode-info">
-                <h4>Difficult Words</h4>
-                <p>Shows ONLY words you marked as difficult with thumbs down - your problem areas that need extra work</p>
-                <div className="mode-stats">Need practice • {stats.review || 0} cards to improve</div>
+                <h4>Difficult Words (SRS)</h4>
+                <p>Smart review of problem words - overdue cards first, then by mistake count and difficulty level for focused practice</p>
+                <div className="mode-stats">Priority by difficulty • {stats.review || 0} cards to improve</div>
               </div>
             </button>
             
@@ -166,9 +166,9 @@ const SettingsPanel = ({
                 <span className="material-icons">task_alt</span>
               </div>
               <div className="mode-info">
-                <h4>Learned Words</h4>
-                <p>Shows ONLY words you marked as learned with thumbs up - vocabulary you've successfully mastered</p>
-                <div className="mode-stats">Mastered • {stats.learned || 0} cards learned</div>
+                <h4>Learned Words (SRS)</h4>
+                <p>Maintenance review of mastered words - due cards first for spaced repetition, then recent learning for reinforcement</p>
+                <div className="mode-stats">Maintenance mode • {stats.learned || 0} cards learned</div>
               </div>
             </button>
           </div>
