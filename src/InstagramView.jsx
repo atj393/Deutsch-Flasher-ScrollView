@@ -55,7 +55,6 @@ const InstagramView = () => {
   const [filteredWords, setFilteredWords] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("alphabetical");
-  const [showAnalytics, setShowAnalytics] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState(null);
   const [sessionStats, setSessionStats] = useState({
     wordsStudied: 0,
@@ -805,8 +804,6 @@ const InstagramView = () => {
         theme={theme}
         toggleTheme={toggleTheme}
         stats={stats}
-        showAnalytics={showAnalytics}
-        setShowAnalytics={setShowAnalytics}
         resetData={resetData}
         setIsFlipped={setIsFlipped}
         setCurrentCardIndex={setCurrentCardIndex}
