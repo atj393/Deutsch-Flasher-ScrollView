@@ -5,11 +5,16 @@ import {
   calculateNextInterval,
   calculateNextReviewDate,
   getCardStats,
+  getDueCards,
+  isCardDue,
 } from "./srsAlgorithm";
 import { recordNewWordLearned } from "./statisticsManager";
 import './InstagramView.css';
+import './components/BrowsePage.css';
 import BurgerMenu from './components/BurgerMenu';
+import SearchButton from './components/SearchButton';
 import SettingsPanel from './components/SettingsPanel';
+import BrowsePage from './components/BrowsePage';
 import FullScreenCard from './components/FullScreenCard';
 import initialWordsData from "./data/initialWords.json";
 
@@ -119,7 +124,44 @@ const InstagramView = () => {
     let filtered = [...words];
 
     if (studyMode === "random") {
-      filtered = words;
+      // Smart SRS-based Random Mode
+      const today = new Date();
+      
+      // Categorize cards by SRS priority
+      const overdueCards = words.filter(word => 
+        word.nextReview && new Date(word.nextReview) < today && word.totalReviews > 0
+      );
+      
+      const dueCards = words.filter(word => 
+        word.nextReview && 
+        new Date(word.nextReview).toDateString() === today.toDateString() && 
+        word.totalReviews > 0
+      );
+      
+      const newCards = words.filter(word => 
+        word.status === null || word.totalReviews === 0
+      );
+      
+      const futureCards = words.filter(word => 
+        word.nextReview && new Date(word.nextReview) > today && word.totalReviews > 0
+      );
+      
+      // Prioritize cards with weighted random selection
+      const prioritizedCards = [
+        ...overdueCards,     // Show ALL overdue cards first
+        ...overdueCards,     // Double weight for overdue
+        ...dueCards,         // Show due cards
+        ...newCards,         // Mix in new cards
+        ...futureCards.slice(0, Math.ceil(futureCards.length * 0.1)) // Only 10% of future cards
+      ];
+      
+      // Shuffle the prioritized list to maintain randomness within priorities
+      filtered = prioritizedCards.sort(() => Math.random() - 0.5);
+      
+      // If no prioritized cards, fall back to all cards
+      if (filtered.length === 0) {
+        filtered = words.sort(() => Math.random() - 0.5);
+      }
     } else if (studyMode === "new") {
       filtered = words.filter((word) => word.status === null);
     } else if (studyMode === "learning") {
@@ -128,51 +170,22 @@ const InstagramView = () => {
       filtered = words.filter((word) => word.status === "review");
     } else if (studyMode === "learned") {
       filtered = words.filter((word) => word.status === "learned");
-    } else if (studyMode === "browse") {
-      if (searchTerm.trim()) {
-        const term = searchTerm.toLowerCase().trim();
-        filtered = words.filter((word) => {
-          return (
-            word.word.toLowerCase().includes(term) ||
-            word.meaning.toLowerCase().includes(term) ||
-            (word.article && word.article.toLowerCase().includes(term)) ||
-            word.type.toLowerCase().includes(term) ||
-            word.sentence.toLowerCase().includes(term) ||
-            word.sentenceMeaning.toLowerCase().includes(term) ||
-            (word.status || "new").toLowerCase().includes(term)
-          );
-        });
-      }
-      
-      // Apply sorting for browse mode
-      filtered.sort((a, b) => {
-        if (sortBy === "alphabetical") {
-          return a.word.localeCompare(b.word);
-        } else if (sortBy === "status") {
-          const statusOrder = { new: 0, learning: 1, review: 2, learned: 3 };
-          const statusA = statusOrder[a.status || "new"];
-          const statusB = statusOrder[b.status || "new"];
-          return statusA - statusB;
-        } else if (sortBy === "reviews") {
-          return (b.totalReviews || 0) - (a.totalReviews || 0);
-        } else if (sortBy === "recent") {
-          return new Date(b.lastReviewed || b.createdDate) - new Date(a.lastReviewed || a.createdDate);
-        }
-        return 0;
-      });
     }
 
     setFilteredWords(filtered);
 
     // Update stats whenever words or filtering changes
+    const today = new Date();
     const newStats = {
-      new: words.filter((word) => word.status === null).length,
+      new: words.filter((word) => word.status === null || word.totalReviews === 0).length,
       learning: words.filter((word) => word.status === "learning").length,
       review: words.filter((word) => word.status === "review").length,
       learned: words.filter((word) => word.status === "learned").length,
-      due: words.filter(
-        (word) =>
-          word.nextReview && new Date(word.nextReview) <= new Date()
+      due: words.filter((word) => 
+        word.nextReview && new Date(word.nextReview) <= today && word.totalReviews > 0
+      ).length,
+      overdue: words.filter((word) => 
+        word.nextReview && new Date(word.nextReview) < today && word.totalReviews > 0
       ).length,
     };
     setStats(newStats);
@@ -190,6 +203,8 @@ const InstagramView = () => {
   const [visibleCardId, setVisibleCardId] = useState(null);
   // Settings panel state
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
+  // Browse page state
+  const [isBrowsePageOpen, setIsBrowsePageOpen] = useState(false);
   // Track flipped state for each card separately
   const [flippedCards, setFlippedCards] = useState(new Set());
   // Track which cards have already been marked as viewed to prevent duplicates
@@ -722,6 +737,13 @@ const InstagramView = () => {
   // Handle key presses (maintain keyboard shortcuts)
   useEffect(() => {
     const handleKeyPress = (event) => {
+      // Close browse page on ESC (priority)
+      if (event.key === "Escape" && isBrowsePageOpen) {
+        event.preventDefault();
+        setIsBrowsePageOpen(false);
+        return;
+      }
+
       // Close settings panel on ESC
       if (event.key === "Escape" && isSettingsPanelOpen) {
         event.preventDefault();
@@ -729,8 +751,8 @@ const InstagramView = () => {
         return;
       }
 
-      // Don't handle other shortcuts if settings panel is open
-      if (isSettingsPanelOpen) return;
+      // Don't handle other shortcuts if any panel is open
+      if (isSettingsPanelOpen || isBrowsePageOpen) return;
 
       // Navigation and interaction key handling
       switch (event.key) {
@@ -767,7 +789,7 @@ const InstagramView = () => {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [handleQualityOrStatusRating, resetCardToLearning, handleCardFlip, isSettingsPanelOpen, navigateNext, navigatePrevious]);
+  }, [handleQualityOrStatusRating, resetCardToLearning, handleCardFlip, isSettingsPanelOpen, isBrowsePageOpen, navigateNext, navigatePrevious]);
 
   // Cleanup animation timeout on unmount
   useEffect(() => {
@@ -789,10 +811,23 @@ const InstagramView = () => {
         <h1>Flashcard Deutscher</h1>
       </div>
 
+      {/* Search Button */}
+      <SearchButton 
+        onClick={() => setIsBrowsePageOpen(true)}
+      />
+
       {/* Burger Menu Button */}
       <BurgerMenu 
         isOpen={isSettingsPanelOpen}
         onClick={() => setIsSettingsPanelOpen(!isSettingsPanelOpen)}
+      />
+
+      {/* Browse Page */}
+      <BrowsePage
+        isOpen={isBrowsePageOpen}
+        onClose={() => setIsBrowsePageOpen(false)}
+        words={words}
+        theme={theme}
       />
 
       {/* Settings Panel */}

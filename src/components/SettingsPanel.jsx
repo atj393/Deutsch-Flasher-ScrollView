@@ -82,6 +82,16 @@ const SettingsPanel = ({
               <span className="stat-number">{stats.review || 0}</span>
               <span className="stat-label">Difficult</span>
             </div>
+            <div className="stat-card due-card">
+              <span className="stat-number">{stats.due || 0}</span>
+              <span className="stat-label">Due Today</span>
+            </div>
+            {(stats.overdue || 0) > 0 && (
+              <div className="stat-card overdue-card">
+                <span className="stat-number">{stats.overdue || 0}</span>
+                <span className="stat-label">Overdue</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -100,9 +110,9 @@ const SettingsPanel = ({
                 <span className="material-icons">shuffle</span>
               </div>
               <div className="mode-info">
-                <h4>Random Words</h4>
-                <p>Shows ALL cards from every category in random order - includes new, viewed, difficult, and learned words together</p>
-                <div className="mode-stats">Mixed deck • All categories combined</div>
+                <h4>Smart Random (SRS)</h4>
+                <p>Intelligent spaced repetition - prioritizes overdue and due cards while mixing in new words for optimal learning</p>
+                <div className="mode-stats">SRS Algorithm • {stats.due || 0} due • {stats.overdue || 0} overdue</div>
               </div>
             </button>
             
@@ -159,33 +169,6 @@ const SettingsPanel = ({
                 <h4>Learned Words</h4>
                 <p>Shows ONLY words you marked as learned with thumbs up - vocabulary you've successfully mastered</p>
                 <div className="mode-stats">Mastered • {stats.learned || 0} cards learned</div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* Browse Mode Section - Separate */}
-        <div className="settings-section browse-section">
-          <div className="section-header">
-            <h3><span className="material-icons">menu_book</span> Browse Mode</h3>
-            <p className="section-desc">Explore vocabulary without SRS tracking</p>
-          </div>
-          <div className="browse-mode">
-            <button
-              className={`browse-card ${studyMode === "browse" ? "active" : ""}`}
-              onClick={() => handleModeChange("browse")}
-            >
-              <div className="browse-icon">
-                <span className="material-icons">explore</span>
-              </div>
-              <div className="browse-info">
-                <h4>Explore & Search</h4>
-                <p>Look up any word without affecting your learning progress - like a dictionary mode</p>
-                <div className="browse-features">
-                  <span className="feature"><span className="material-icons">search</span> Search</span>
-                  <span className="feature"><span className="material-icons">sort</span> Sort</span>
-                  <span className="feature"><span className="material-icons">filter_list</span> Filter</span>
-                </div>
               </div>
             </button>
           </div>
