@@ -27,7 +27,8 @@ const InstagramView = ({
   searchTerm,
   setSearchTerm,
   sortBy,
-  setSortBy
+  setSortBy,
+  markCardAsViewed
 }) => {
   // Track which card is currently visible
   const [visibleCardId, setVisibleCardId] = useState(null);
@@ -35,6 +36,8 @@ const InstagramView = ({
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
   // Track flipped state for each card separately
   const [flippedCards, setFlippedCards] = useState(new Set());
+  // Track which cards have already been marked as viewed to prevent duplicates
+  const [viewedCardIds, setViewedCardIds] = useState(new Set());
   const observers = useRef(new Map());
   
   // Touch/swipe handling state
@@ -157,6 +160,23 @@ const InstagramView = ({
       setVisibleCardId(filteredWords[0].id);
     }
   }, [filteredWords, visibleCardId]);
+
+  // Mark card as viewed when it becomes visible (only once per card)
+  useEffect(() => {
+    if (visibleCardId && markCardAsViewed && !viewedCardIds.has(visibleCardId)) {
+      // Find the current card to check its status
+      const currentCard = filteredWords.find(card => card.id === visibleCardId);
+      
+      // Only mark as viewed if it's a fresh card (status is null)
+      if (currentCard && currentCard.status === null) {
+        console.log('Marking card as viewed for first time:', currentCard.word);
+        markCardAsViewed(visibleCardId);
+        
+        // Add to viewed set to prevent multiple calls
+        setViewedCardIds(prev => new Set(prev).add(visibleCardId));
+      }
+    }
+  }, [visibleCardId, markCardAsViewed, filteredWords, viewedCardIds]);
   
   // Prevent body scrolling when component is mounted
   useEffect(() => {
@@ -422,6 +442,28 @@ const InstagramView = ({
       ref={containerRef}
       className="instagram-view-container"
     >
+      {/* Study Mode Indicator */}
+      <div className="study-mode-indicator">
+        <div className={`mode-badge ${studyMode}`}>
+          <span className="material-icons">
+            {studyMode === 'random' && 'shuffle'}
+            {studyMode === 'new' && 'auto_awesome'}
+            {studyMode === 'learning' && 'visibility'}
+            {studyMode === 'review' && 'priority_high'}
+            {studyMode === 'learned' && 'task_alt'}
+            {studyMode === 'browse' && 'explore'}
+          </span>
+          <span className="mode-text">
+            {studyMode === 'random' && 'Random'}
+            {studyMode === 'new' && 'New'}
+            {studyMode === 'learning' && 'Viewed'}
+            {studyMode === 'review' && 'Difficult'}
+            {studyMode === 'learned' && 'Learned'}
+            {studyMode === 'browse' && 'Browse'}
+          </span>
+        </div>
+      </div>
+
       {/* Burger Menu Button */}
       <BurgerMenu 
         isOpen={isSettingsPanelOpen}
@@ -526,24 +568,6 @@ const InstagramView = ({
           </div>
         );
       })()}
-      
-      {/* Navigation Controls */}
-      <div className="navigation-arrows">
-        <button 
-          className="nav-arrow nav-arrow-left"
-          onClick={navigatePrevious}
-          title="Previous card (← key or swipe right)"
-        >
-          <span className="material-icons">chevron_left</span>
-        </button>
-        <button 
-          className="nav-arrow nav-arrow-right"
-          onClick={navigateNext}
-          title="Next card (→ key or swipe left)"
-        >
-          <span className="material-icons">chevron_right</span>
-        </button>
-      </div>
       
       {/* Card Progress Indicator */}
       <div className="card-progress-indicator">

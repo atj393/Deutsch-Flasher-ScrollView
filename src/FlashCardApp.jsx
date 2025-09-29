@@ -188,6 +188,7 @@ const FlashCardApp = () => {
     // Update stats whenever words or filtering changes
     const newStats = {
       new: words.filter((word) => word.status === null).length,
+      learning: words.filter((word) => word.status === "learning").length,
       review: words.filter((word) => word.status === "review").length,
       learned: words.filter((word) => word.status === "learned").length,
       due: words.filter(
@@ -222,6 +223,27 @@ const FlashCardApp = () => {
   }, [searchTerm, studyMode, sortBy]);
 
   // Update word with direct status mapping
+  // Mark card as viewed (moves from fresh to in-progress)
+  const markCardAsViewed = useCallback((wordId) => {
+    setWords(prevWords => 
+      prevWords.map(word => {
+        if (word.id !== wordId) return word;
+        
+        // Only update if it's a fresh card (status is null)
+        if (word.status === null) {
+          console.log('Marking card as viewed:', word.word, 'status: null -> learning');
+          return {
+            ...word,
+            status: "learning", // Move to Viewed state (NOT learned!)
+            lastReviewed: new Date().toISOString(),
+          };
+        }
+        
+        return word;
+      })
+    );
+  }, []);
+
   const updateWordWithSRS = useCallback((wordId, quality) => {
     setWords(prevWords => 
       prevWords.map(word => {
@@ -231,8 +253,10 @@ const FlashCardApp = () => {
         let newStatus;
         if (quality === 1) {
           newStatus = "learned"; // Thumbs up = Learned
+          console.log('👍 Thumbs up pressed - marking as learned:', word.word);
         } else if (quality === 0) {
           newStatus = "review"; // Thumbs down = Needs Review
+          console.log('👎 Thumbs down pressed - marking as difficult:', word.word);
         }
         
         // Calculate SRS values
@@ -563,6 +587,7 @@ const FlashCardApp = () => {
         setSearchTerm={setSearchTerm}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        markCardAsViewed={markCardAsViewed}
       />
 
       {/* Settings Panel - Navigation and configuration options */}

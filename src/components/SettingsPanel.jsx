@@ -61,58 +61,12 @@ const SettingsPanel = ({
           </button>
         </div>
 
-        {/* Study Mode Selection */}
-        <div className="settings-section">
-          <h3>Study Mode</h3>
-          <div className="mode-selector">
-            <button
-              className={studyMode === "random" ? "active" : ""}
-              onClick={() => handleModeChange("random")}
-            >
-              <span className="material-icons">shuffle</span>
-              Random
-            </button>
-            <button
-              className={studyMode === "new" ? "active" : ""}
-              onClick={() => handleModeChange("new")}
-            >
-              <span className="material-icons">fiber_new</span>
-              New
-            </button>
-            <button
-              className={studyMode === "learning" ? "active" : ""}
-              onClick={() => handleModeChange("learning")}
-            >
-              <span className="material-icons">school</span>
-              Learning
-            </button>
-            <button
-              className={studyMode === "review" ? "active" : ""}
-              onClick={() => handleModeChange("review")}
-            >
-              <span className="material-icons">quiz</span>
-              Review
-            </button>
-            <button
-              className={studyMode === "learned" ? "active" : ""}
-              onClick={() => handleModeChange("learned")}
-            >
-              <span className="material-icons">check_circle</span>
-              Learned
-            </button>
-            <button
-              className={studyMode === "browse" ? "active" : ""}
-              onClick={() => handleModeChange("browse")}
-            >
-              <span className="material-icons">search</span>
-              Browse
-            </button>
-          </div>
-        </div>
-
-        {/* Statistics */}
+        {/* Progress Section - Moved to Top */}
         <div className="settings-section stats-section">
-          <h3>Progress</h3>
+          <div className="section-header">
+            <h3><span className="material-icons">analytics</span> Your Progress</h3>
+            <p className="section-desc">Current learning statistics</p>
+          </div>
           <div className="stats-grid">
             <div className="stat-card">
               <span className="stat-number">{stats.new || 0}</span>
@@ -120,7 +74,7 @@ const SettingsPanel = ({
             </div>
             <div className="stat-card">
               <span className="stat-number">{stats.learning || 0}</span>
-              <span className="stat-label">Learning</span>
+              <span className="stat-label">Viewed</span>
             </div>
             <div className="stat-card">
               <span className="stat-number">{stats.learned || 0}</span>
@@ -128,18 +82,120 @@ const SettingsPanel = ({
             </div>
             <div className="stat-card">
               <span className="stat-number">{stats.review || 0}</span>
-              <span className="stat-label">Review</span>
+              <span className="stat-label">Difficult</span>
             </div>
-            <div className="stat-card">
-              <span className="stat-number">{stats.due || 0}</span>
-              <span className="stat-label">Due</span>
-            </div>
+          </div>
+        </div>
+
+        {/* Study Modes Section - Enhanced */}
+        <div className="settings-section study-modes-section">
+          <div className="section-header">
+            <h3><span className="material-icons">gps_fixed</span> Study Modes</h3>
+            <p className="section-desc">Choose your learning approach - each mode uses SRS algorithm</p>
+          </div>
+          <div className="mode-grid study-modes">
+            <button
+              className={`mode-card ${studyMode === "random" ? "active" : ""}`}
+              onClick={() => handleModeChange("random")}
+            >
+              <div className="mode-icon random">
+                <span className="material-icons">shuffle</span>
+              </div>
+              <div className="mode-info">
+                <h4>Random Words</h4>
+                <p>Shows ALL cards from every category in random order - includes new, viewed, difficult, and learned words together</p>
+                <div className="mode-stats">Mixed deck • All categories combined</div>
+              </div>
+            </button>
+            
+            <button
+              className={`mode-card ${studyMode === "new" ? "active" : ""}`}
+              onClick={() => handleModeChange("new")}
+            >
+              <div className="mode-icon new">
+                <span className="material-icons">auto_awesome</span>
+              </div>
+              <div className="mode-info">
+                <h4>New Words</h4>
+                <p>Shows ONLY words you've never seen before - completely fresh vocabulary that you haven't viewed yet</p>
+                <div className="mode-stats">Never viewed • {stats.new || 0} cards available</div>
+              </div>
+            </button>
+            
+            <button
+              className={`mode-card ${studyMode === "learning" ? "active" : ""}`}
+              onClick={() => handleModeChange("learning")}
+            >
+              <div className="mode-icon learning">
+                <span className="material-icons">visibility</span>
+              </div>
+              <div className="mode-info">
+                <h4>Viewed Words</h4>
+                <p>Shows ONLY words you've seen but haven't rated yet - cards that moved from new to viewed state</p>
+                <div className="mode-stats">Seen but unrated • {stats.learning || 0} cards to rate</div>
+              </div>
+            </button>
+            
+            <button
+              className={`mode-card ${studyMode === "review" ? "active" : ""}`}
+              onClick={() => handleModeChange("review")}
+            >
+              <div className="mode-icon review">
+                <span className="material-icons">priority_high</span>
+              </div>
+              <div className="mode-info">
+                <h4>Difficult Words</h4>
+                <p>Shows ONLY words you marked as difficult with thumbs down - your problem areas that need extra work</p>
+                <div className="mode-stats">Need practice • {stats.review || 0} cards to improve</div>
+              </div>
+            </button>
+            
+            <button
+              className={`mode-card ${studyMode === "learned" ? "active" : ""}`}
+              onClick={() => handleModeChange("learned")}
+            >
+              <div className="mode-icon learned">
+                <span className="material-icons">task_alt</span>
+              </div>
+              <div className="mode-info">
+                <h4>Learned Words</h4>
+                <p>Shows ONLY words you marked as learned with thumbs up - vocabulary you've successfully mastered</p>
+                <div className="mode-stats">Mastered • {stats.learned || 0} cards learned</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Browse Mode Section - Separate */}
+        <div className="settings-section browse-section">
+          <div className="section-header">
+            <h3><span className="material-icons">menu_book</span> Browse Mode</h3>
+            <p className="section-desc">Explore vocabulary without SRS tracking</p>
+          </div>
+          <div className="browse-mode">
+            <button
+              className={`browse-card ${studyMode === "browse" ? "active" : ""}`}
+              onClick={() => handleModeChange("browse")}
+            >
+              <div className="browse-icon">
+                <span className="material-icons">explore</span>
+              </div>
+              <div className="browse-info">
+                <h4>Explore & Search</h4>
+                <p>Look up any word without affecting your learning progress - like a dictionary mode</p>
+                <div className="browse-features">
+                  <span className="feature"><span className="material-icons">search</span> Search</span>
+                  <span className="feature"><span className="material-icons">sort</span> Sort</span>
+                  <span className="feature"><span className="material-icons">filter_list</span> Filter</span>
+                </div>
+              </div>
+            </button>
           </div>
         </div>
 
         {/* App Controls */}
         <div className="settings-section">
-          <h3>App Controls</h3>
+          <h3><span className="material-icons">settings</span> App Controls</h3>
           <div className="control-group">
             <div className="control-item">
               <span className="control-label">Theme</span>
@@ -168,29 +224,6 @@ const SettingsPanel = ({
                 <span className="material-icons">refresh</span>
                 Reset
               </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Keyboard Shortcuts Info */}
-        <div className="settings-section">
-          <h3>Keyboard Shortcuts</h3>
-          <div className="shortcuts-list">
-            <div className="shortcut-item">
-              <span className="shortcut-key">Space</span>
-              <span className="shortcut-desc">Flip Card</span>
-            </div>
-            <div className="shortcut-item">
-              <span className="shortcut-key">↑</span>
-              <span className="shortcut-desc">Mark as Learned</span>
-            </div>
-            <div className="shortcut-item">
-              <span className="shortcut-key">↓</span>
-              <span className="shortcut-desc">Mark for Review</span>
-            </div>
-            <div className="shortcut-item">
-              <span className="shortcut-key">Right Shift</span>
-              <span className="shortcut-desc">Reset to New</span>
             </div>
           </div>
         </div>

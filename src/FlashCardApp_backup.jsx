@@ -921,7 +921,7 @@ const FlashCardApp = () => {
                   onClick={resetCardToLearning}
                   title="Reset to New state (Right Shift key)"
                 >
-                  <span className="material-icons">refresh</span>
+                  <span className="material-icons">check</span>
                 </button>
                 <button
                   className={`card-rating-btn rating-down ${currentCard.status === 'review' ? 'active' : ''}`}

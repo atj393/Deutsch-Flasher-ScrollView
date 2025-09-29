@@ -21,38 +21,23 @@ const FullScreenCard = ({
     }
   };
 
-  // Touch gesture handlers for mobile swipe
+  // Touch gesture handlers disabled - using main navigation swipe instead
   const handleTouchStart = (e) => {
-    touchEnd.current = null;
-    touchStart.current = e.targetTouches[0].clientY;
+    // Disabled to prevent conflicts with main navigation
   };
 
   const handleTouchMove = (e) => {
-    touchEnd.current = e.targetTouches[0].clientY;
+    // Disabled to prevent conflicts with main navigation
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart.current || !touchEnd.current) return;
-    
-    const distance = touchStart.current - touchEnd.current;
-    const isUpSwipe = distance > 50;
-    const isDownSwipe = distance < -50;
-    
-    if (isUpSwipe && isVisible) {
-      onRate(1); // Swipe up = Learned
-    }
-    if (isDownSwipe && isVisible) {
-      onRate(0); // Swipe down = Review
-    }
+    // Disabled to prevent conflicts with main navigation
   };
 
   return (
     <div 
       className={`flashcard instagram-style ${isFlipped ? 'flipped' : ''}`}
       onClick={handleCardClick}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
     >
       <div className="card-content">
         {/* Front of card - German */}
