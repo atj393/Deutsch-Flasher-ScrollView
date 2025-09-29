@@ -41,7 +41,7 @@ const FullScreenCard = ({
     >
       <div className="card-content">
         {/* Front of card - German */}
-        <div className="front">
+        <div className="front status">
           <span className={`card-status status-${card.status || 'new'}`} title="Card status">
             {card.status || 'new'}
           </span>
@@ -104,39 +104,23 @@ const FullScreenCard = ({
               className={`card-rating-btn rating-up ${card.status === 'learned' ? 'active' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                onRate(1);
+                onRate(1); // Toggle logic is handled in parent
               }}
-              title="Learned - Easy and confident (↑ key)"
+              title={card.status === 'learned' ? 
+                "Remove from Learned (click again to reset to learning)" : 
+                "Learned - Easy and confident (↑ key)"}
             >
               <span className="material-icons">thumb_up</span>
-            </button>
-            <button
-              className="card-rating-btn flip-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onFlip();
-              }}
-              title="Flip Card (Space key)"
-            >
-              <span className="material-icons">flip</span>
-            </button>
-            <button
-              className="card-rating-btn rating-reset"
-              onClick={(e) => {
-                e.stopPropagation();
-                onReset();
-              }}
-              title="Reset to New state (Right Shift key)"
-            >
-              <span className="material-icons">refresh</span>
             </button>
             <button
               className={`card-rating-btn rating-down ${card.status === 'review' ? 'active' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                onRate(0);
+                onRate(0); // Toggle logic is handled in parent
               }}
-              title="Needs Review - Needs more practice (↓ key)"
+              title={card.status === 'review' ? 
+                "Remove from Review (click again to reset to learning)" : 
+                "Needs Review - Needs more practice (↓ key)"}
             >
               <span className="material-icons">thumb_down</span>
             </button>

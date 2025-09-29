@@ -9,8 +9,6 @@ const SettingsPanel = ({
   theme,
   toggleTheme,
   stats,
-  showAnalytics,
-  setShowAnalytics,
   resetData,
   setIsFlipped,
   setCurrentCardIndex,
@@ -204,17 +202,6 @@ const SettingsPanel = ({
                   {theme === "light" ? "dark_mode" : "light_mode"}
                 </span>
                 {theme === "light" ? "Dark" : "Light"}
-              </button>
-            </div>
-            
-            <div className="control-item">
-              <span className="control-label">Analytics</span>
-              <button 
-                className="control-button" 
-                onClick={() => setShowAnalytics(true)}
-              >
-                <span className="material-icons">analytics</span>
-                View Analytics
               </button>
             </div>
             
