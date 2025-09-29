@@ -352,7 +352,7 @@
 
 /* Individual mode colors */
 .mode-icon.random {
-    background: linear-gradient(135deg, #f59e0b, #f97316);
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: white;
 }
 
@@ -362,12 +362,12 @@
 }
 
 .mode-icon.learning {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
     color: white;
 }
 
 .mode-icon.review {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
 }
 
