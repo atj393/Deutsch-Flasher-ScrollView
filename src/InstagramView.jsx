@@ -8,7 +8,6 @@ import {
   getDueCards,
   isCardDue,
 } from "./srsAlgorithm";
-import { recordNewWordLearned } from "./statisticsManager";
 import './InstagramView.css';
 import './components/BrowsePage.css';
 import BurgerMenu from './components/BurgerMenu';
@@ -400,11 +399,6 @@ const InstagramView = () => {
           // Update mistake count
           if (quality < 1) {
             updatedWord.mistakeCount = (word.mistakeCount || 0) + 1;
-          }
-
-          // Record statistics
-          if (quality >= 1) {
-            recordNewWordLearned();
           }
         }
         
