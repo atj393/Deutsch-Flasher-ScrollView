@@ -54,7 +54,11 @@ const InstagramView = () => {
   const [words, setWords] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [studyMode, setStudyMode] = useState("random");
+  const [studyMode, setStudyMode] = useState(() => {
+    // Load study mode from localStorage or default to "random"
+    const savedStudyMode = localStorage.getItem("studyMode");
+    return savedStudyMode || "random";
+  });
   const [stats, setStats] = useState({});
   const [theme, setTheme] = useState("light");
   const [filteredWords, setFilteredWords] = useState([]);
@@ -116,6 +120,11 @@ const InstagramView = () => {
       localStorage.setItem("flashcards", JSON.stringify(words));
     }
   }, [words]);
+
+  // Save study mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("studyMode", studyMode);
+  }, [studyMode]);
 
   // Filter words based on study mode
   useEffect(() => {

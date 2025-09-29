@@ -1,5 +1,5 @@
 // src/components/SettingsPanel.jsx
-import React from 'react';
+import React, { useState } from 'react';
 
 const SettingsPanel = ({ 
   isOpen, 
@@ -18,6 +18,12 @@ const SettingsPanel = ({
   setCurrentHistoryIndex
 }) => {
   
+  const [expandedMode, setExpandedMode] = useState(null);
+  
+  const toggleDescription = (mode) => {
+    setExpandedMode(expandedMode === mode ? null : mode);
+  };
+  
   const handleModeChange = (mode) => {
     setStudyMode(mode);
     setCurrentCardIndex(0);
@@ -34,6 +40,9 @@ const SettingsPanel = ({
       setCardHistory([]);
       setCurrentHistoryIndex(-1);
     }
+    
+    // Close the settings panel and show the cards immediately
+    onClose();
   };
 
   const handleBackdropClick = (e) => {
@@ -110,9 +119,24 @@ const SettingsPanel = ({
                 <span className="material-icons">shuffle</span>
               </div>
               <div className="mode-info">
-                <h4>Smart Random (SRS)</h4>
-                <p>Intelligent spaced repetition - prioritizes overdue and due cards while mixing in new words for optimal learning</p>
+                <div className="mode-header">
+                  <h4>Smart Random (SRS)</h4>
+                  <button 
+                    className="info-toggle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDescription('random');
+                    }}
+                  >
+                    <span className="material-icons">
+                      {expandedMode === 'random' ? 'expand_less' : 'info_outline'}
+                    </span>
+                  </button>
+                </div>
                 <div className="mode-stats">SRS Algorithm • {stats.due || 0} due • {stats.overdue || 0} overdue</div>
+                {expandedMode === 'random' && (
+                  <p className="mode-description">Intelligent spaced repetition - prioritizes overdue and due cards while mixing in new words for optimal learning</p>
+                )}
               </div>
             </button>
             
@@ -124,9 +148,24 @@ const SettingsPanel = ({
                 <span className="material-icons">auto_awesome</span>
               </div>
               <div className="mode-info">
-                <h4>New Words (SRS)</h4>
-                <p>Fresh vocabulary ordered systematically - oldest first to ensure consistent learning progression through new material</p>
+                <div className="mode-header">
+                  <h4>New Words (SRS)</h4>
+                  <button 
+                    className="info-toggle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDescription('new');
+                    }}
+                  >
+                    <span className="material-icons">
+                      {expandedMode === 'new' ? 'expand_less' : 'info_outline'}
+                    </span>
+                  </button>
+                </div>
                 <div className="mode-stats">Systematic order • {stats.new || 0} cards available</div>
+                {expandedMode === 'new' && (
+                  <p className="mode-description">Fresh vocabulary ordered systematically - oldest first to ensure consistent learning progression through new material</p>
+                )}
               </div>
             </button>
             
@@ -138,9 +177,24 @@ const SettingsPanel = ({
                 <span className="material-icons">visibility</span>
               </div>
               <div className="mode-info">
-                <h4>Viewed Words (SRS)</h4>
-                <p>Intelligent review of learning cards - prioritizes overdue and difficult words first, then by SRS schedule</p>
+                <div className="mode-header">
+                  <h4>Viewed Words (SRS)</h4>
+                  <button 
+                    className="info-toggle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDescription('learning');
+                    }}
+                  >
+                    <span className="material-icons">
+                      {expandedMode === 'learning' ? 'expand_less' : 'info_outline'}
+                    </span>
+                  </button>
+                </div>
                 <div className="mode-stats">SRS prioritized • {stats.learning || 0} cards to rate</div>
+                {expandedMode === 'learning' && (
+                  <p className="mode-description">Intelligent review of learning cards - prioritizes overdue and difficult words first, then by SRS schedule</p>
+                )}
               </div>
             </button>
             
@@ -152,9 +206,24 @@ const SettingsPanel = ({
                 <span className="material-icons">priority_high</span>
               </div>
               <div className="mode-info">
-                <h4>Difficult Words (SRS)</h4>
-                <p>Smart review of problem words - overdue cards first, then by mistake count and difficulty level for focused practice</p>
+                <div className="mode-header">
+                  <h4>Difficult Words (SRS)</h4>
+                  <button 
+                    className="info-toggle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDescription('review');
+                    }}
+                  >
+                    <span className="material-icons">
+                      {expandedMode === 'review' ? 'expand_less' : 'info_outline'}
+                    </span>
+                  </button>
+                </div>
                 <div className="mode-stats">Priority by difficulty • {stats.review || 0} cards to improve</div>
+                {expandedMode === 'review' && (
+                  <p className="mode-description">Smart review of problem words - overdue cards first, then by mistake count and difficulty level for focused practice</p>
+                )}
               </div>
             </button>
             
@@ -166,9 +235,24 @@ const SettingsPanel = ({
                 <span className="material-icons">task_alt</span>
               </div>
               <div className="mode-info">
-                <h4>Learned Words (SRS)</h4>
-                <p>Maintenance review of mastered words - due cards first for spaced repetition, then recent learning for reinforcement</p>
+                <div className="mode-header">
+                  <h4>Learned Words (SRS)</h4>
+                  <button 
+                    className="info-toggle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDescription('learned');
+                    }}
+                  >
+                    <span className="material-icons">
+                      {expandedMode === 'learned' ? 'expand_less' : 'info_outline'}
+                    </span>
+                  </button>
+                </div>
                 <div className="mode-stats">Maintenance mode • {stats.learned || 0} cards learned</div>
+                {expandedMode === 'learned' && (
+                  <p className="mode-description">Maintenance review of mastered words - due cards first for spaced repetition, then recent learning for reinforcement</p>
+                )}
               </div>
             </button>
           </div>

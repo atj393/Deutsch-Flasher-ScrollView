@@ -410,6 +410,63 @@
     opacity: 0.8;
 }
 
+/* Mode Header and Toggle */
+.mode-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.info-toggle {
+    background: none;
+    border: none;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+}
+
+.info-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.info-toggle .material-icons {
+    font-size: 16px;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.mode-description {
+    margin: 8px 0 0 0 !important;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--btn-primary);
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 100px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
+
 .mode-card.active .mode-info h4,
 .mode-card.active .mode-info p,
 .mode-card.active .mode-stats,
@@ -417,6 +474,19 @@
 .browse-card.active .browse-info p {
     color: white;
     opacity: 1;
+}
+
+.mode-card.active .info-toggle .material-icons {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.mode-card.active .info-toggle:hover .material-icons {
+    color: white;
+}
+
+.mode-card.active .mode-description {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Browse Features */
