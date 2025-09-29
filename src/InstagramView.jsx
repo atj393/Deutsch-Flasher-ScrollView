@@ -517,12 +517,13 @@ const InstagramView = () => {
   
   // Get current card index for navigation
   const getCurrentCardIndex = () => {
+    if (!filteredWords.length || !visibleCardId) return -1;
     return filteredWords.findIndex(card => card.id === visibleCardId);
   };
   
   // Complete swipe animation after touch ends
   const completeSwipeAnimation = (direction) => {
-    if (!nextCardId) return;
+    if (!nextCardId || !filteredWords.length) return;
     
     const targetCard = filteredWords.find(card => card.id === nextCardId);
     if (!targetCard) return;
@@ -573,19 +574,21 @@ const InstagramView = () => {
   
   // Navigate to specific card (for programmatic navigation)
   const navigateToCard = (index) => {
-    if (index >= 0 && index < filteredWords.length) {
+    if (index >= 0 && index < filteredWords.length && filteredWords[index]) {
       const targetCard = filteredWords[index];
-      setVisibleCardId(targetCard.id);
-      
-      if (setCurrentCardIndex) {
-        setCurrentCardIndex(index);
+      if (targetCard && targetCard.id) {
+        setVisibleCardId(targetCard.id);
+        
+        if (setCurrentCardIndex) {
+          setCurrentCardIndex(index);
+        }
+        
+        setFlippedCards(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(targetCard.id);
+          return newSet;
+        });
       }
-      
-      setFlippedCards(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(targetCard.id);
-        return newSet;
-      });
     }
   };
   
@@ -615,7 +618,7 @@ const InstagramView = () => {
   
   // Set initial visible card
   useEffect(() => {
-    if (filteredWords.length > 0 && !visibleCardId) {
+    if (filteredWords.length > 0 && filteredWords[0] && filteredWords[0].id && !visibleCardId) {
       setVisibleCardId(filteredWords[0].id);
     }
   }, [filteredWords, visibleCardId]);
@@ -701,23 +704,30 @@ const InstagramView = () => {
         
         // Prepare next card when swipe is significant
         const absTransform = Math.abs(boundedTransform);
-        if (absTransform > 50 && !nextCardId) {
+        if (absTransform > 50 && !nextCardId && filteredWords.length > 0) {
           const currentIndex = getCurrentCardIndex();
-          let nextIndex;
-          let direction;
           
-          if (boundedTransform < 0) {
-            // Swiping up - next card
-            nextIndex = currentIndex < filteredWords.length - 1 ? currentIndex + 1 : 0;
-            direction = 'up';
-          } else {
-            // Swiping down - previous card
-            nextIndex = currentIndex > 0 ? currentIndex - 1 : filteredWords.length - 1;
-            direction = 'down';
+          // Only proceed if we have a valid current index
+          if (currentIndex >= 0) {
+            let nextIndex;
+            let direction;
+            
+            if (boundedTransform < 0) {
+              // Swiping up - next card
+              nextIndex = currentIndex < filteredWords.length - 1 ? currentIndex + 1 : 0;
+              direction = 'up';
+            } else {
+              // Swiping down - previous card
+              nextIndex = currentIndex > 0 ? currentIndex - 1 : filteredWords.length - 1;
+              direction = 'down';
+            }
+            
+            // Ensure the next card exists before trying to access its id
+            if (filteredWords[nextIndex] && filteredWords[nextIndex].id) {
+              setNextCardId(filteredWords[nextIndex].id);
+              setSwipeDirection(direction);
+            }
           }
-          
-          setNextCardId(filteredWords[nextIndex].id);
-          setSwipeDirection(direction);
         }
       }
       

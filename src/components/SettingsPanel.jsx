@@ -111,7 +111,7 @@ const SettingsPanel = ({
             <p className="section-desc">All modes now use intelligent SRS scheduling for optimal learning efficiency</p>
           </div>
           <div className="mode-grid study-modes">
-            <button
+            <div
               className={`mode-card ${studyMode === "random" ? "active" : ""}`}
               onClick={() => handleModeChange("random")}
             >
@@ -138,9 +138,9 @@ const SettingsPanel = ({
                   <p className="mode-description">Intelligent spaced repetition - prioritizes overdue and due cards while mixing in new words for optimal learning</p>
                 )}
               </div>
-            </button>
+            </div>
             
-            <button
+            <div
               className={`mode-card ${studyMode === "new" ? "active" : ""}`}
               onClick={() => handleModeChange("new")}
             >
@@ -167,9 +167,9 @@ const SettingsPanel = ({
                   <p className="mode-description">Fresh vocabulary ordered systematically - oldest first to ensure consistent learning progression through new material</p>
                 )}
               </div>
-            </button>
+            </div>
             
-            <button
+            <div
               className={`mode-card ${studyMode === "learning" ? "active" : ""}`}
               onClick={() => handleModeChange("learning")}
             >
@@ -196,9 +196,9 @@ const SettingsPanel = ({
                   <p className="mode-description">Intelligent review of learning cards - prioritizes overdue and difficult words first, then by SRS schedule</p>
                 )}
               </div>
-            </button>
+            </div>
             
-            <button
+            <div
               className={`mode-card ${studyMode === "review" ? "active" : ""}`}
               onClick={() => handleModeChange("review")}
             >
@@ -225,9 +225,9 @@ const SettingsPanel = ({
                   <p className="mode-description">Smart review of problem words - overdue cards first, then by mistake count and difficulty level for focused practice</p>
                 )}
               </div>
-            </button>
+            </div>
             
-            <button
+            <div
               className={`mode-card ${studyMode === "learned" ? "active" : ""}`}
               onClick={() => handleModeChange("learned")}
             >
@@ -254,7 +254,7 @@ const SettingsPanel = ({
                   <p className="mode-description">Maintenance review of mastered words - due cards first for spaced repetition, then recent learning for reinforcement</p>
                 )}
               </div>
-            </button>
+            </div>
           </div>
         </div>
 
