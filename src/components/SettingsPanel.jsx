@@ -120,7 +120,10 @@ const SettingsPanel = ({
               </div>
               <div className="mode-info">
                 <div className="mode-header">
-                  <h4>Smart Random (SRS)</h4>
+                  <h4>
+                    Smart Random 
+                    {studyMode === "random" && <span className="active-badge">ACTIVE</span>}
+                  </h4>
                   <button 
                     className="info-toggle"
                     onClick={(e) => {
@@ -149,7 +152,10 @@ const SettingsPanel = ({
               </div>
               <div className="mode-info">
                 <div className="mode-header">
-                  <h4>New Words (SRS)</h4>
+                  <h4>
+                    New Words 
+                    {studyMode === "new" && <span className="active-badge">ACTIVE</span>}
+                  </h4>
                   <button 
                     className="info-toggle"
                     onClick={(e) => {
@@ -178,7 +184,10 @@ const SettingsPanel = ({
               </div>
               <div className="mode-info">
                 <div className="mode-header">
-                  <h4>Viewed Words (SRS)</h4>
+                  <h4>
+                    Viewed Words 
+                    {studyMode === "learning" && <span className="active-badge">ACTIVE</span>}
+                  </h4>
                   <button 
                     className="info-toggle"
                     onClick={(e) => {
@@ -207,7 +216,10 @@ const SettingsPanel = ({
               </div>
               <div className="mode-info">
                 <div className="mode-header">
-                  <h4>Difficult Words (SRS)</h4>
+                  <h4>
+                    Difficult Words 
+                    {studyMode === "review" && <span className="active-badge">ACTIVE</span>}
+                  </h4>
                   <button 
                     className="info-toggle"
                     onClick={(e) => {
@@ -236,7 +248,10 @@ const SettingsPanel = ({
               </div>
               <div className="mode-info">
                 <div className="mode-header">
-                  <h4>Learned Words (SRS)</h4>
+                  <h4>
+                    Learned Words 
+                    {studyMode === "learned" && <span className="active-badge">ACTIVE</span>}
+                  </h4>
                   <button 
                     className="info-toggle"
                     onClick={(e) => {

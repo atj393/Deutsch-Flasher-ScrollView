@@ -21,11 +21,11 @@ Flashcard Deutscher is a modern, mobile-optimized flashcard application featurin
 - **Dark/Light Themes**: Automatic theme switching with localStorage persistence
 
 ### 🎯 **Intelligent Study Modes**
-- **Smart Random (SRS)**: Intelligent mixing of due, overdue, and new words
-- **New Words (SRS)**: Systematic introduction of fresh vocabulary
-- **Viewed Words (SRS)**: Review cards you've seen with SRS prioritization  
-- **Difficult Words (SRS)**: Focus on challenging vocabulary with mistake-based ordering
-- **Learned Words (SRS)**: Maintenance review of mastered vocabulary
+- **Smart Random **: Intelligent mixing of due, overdue, and new words
+- **New Words **: Systematic introduction of fresh vocabulary
+- **Viewed Words **: Review cards you've seen with SRS prioritization  
+- **Difficult Words **: Focus on challenging vocabulary with mistake-based ordering
+- **Learned Words **: Maintenance review of mastered vocabulary
 - **Browse & Search**: Explore all 2000+ words with advanced filtering
 
 ### 📊 **Comprehensive Progress Tracking**

@@ -15260,16 +15260,6 @@
     "level": ""
   },
   {
-    "word": "Ski fahren",
-    "article": "",
-    "type": "verb",
-    "sentence": "Wir fahren Ski.",
-    "meaning": "to ski",
-    "sentenceMeaning": "We ski.",
-    "category": "",
-    "level": ""
-  },
-  {
     "word": "Skilehrer",
     "article": "der",
     "type": "noun",
@@ -15286,6 +15276,16 @@
     "sentence": "Der Slip ist weiß.",
     "meaning": "panties",
     "sentenceMeaning": "The panties are white.",
+    "category": "",
+    "level": ""
+  },
+  {
+    "word": "so ... wie",
+    "article": "",
+    "type": "phrase",
+    "sentence": "Mein Auto ist so schnell wie dein Auto.",
+    "meaning": "as ... as",
+    "sentenceMeaning": "My car is as fast as your car.",
     "category": "",
     "level": ""
   },
