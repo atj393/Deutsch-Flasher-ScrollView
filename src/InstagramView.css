@@ -132,6 +132,21 @@
     }
 }
 
+/* Body Scroll Lock - Prevent background scrolling when modals are open */
+body.settings-open,
+body.browse-open {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+body.settings-open .instagram-view-container,
+body.browse-open .instagram-view-container {
+    overflow: hidden !important;
+    touch-action: none !important;
+}
+
 /* Settings Panel Overlay */
 .settings-overlay {
     position: fixed;
@@ -864,7 +879,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    padding: 60px 20px;
+    padding: 60px 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -875,13 +890,16 @@
     -webkit-backface-visibility: hidden;
     background-color: var(--card-bg);
     box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 @media (min-width: 768px) {
 
     .instagram-style .front,
     .instagram-style .back {
-        padding: 80px 40px 120px 40px;
+        padding: 80px 60px 120px 60px;
         border-radius: 0;
     }
 }
@@ -979,6 +997,12 @@
     font-weight: 700;
     color: var(--text-primary);
     position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.2;
+    max-width: 100%;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -987,13 +1011,28 @@
     }
 }
 
+/* Responsive font sizing for very long words */
+.instagram-style .german-word {
+    font-size: clamp(28px, 8vw, 42px);
+}
+
+@media (min-width: 768px) {
+    .instagram-style .german-word {
+        font-size: clamp(24px, 4vw, 36px);
+    }
+}
+
 .instagram-style .german-sentence {
     font-size: 20px;
     line-height: 1.6;
     color: var(--text-secondary);
     margin-top: 25px;
-    max-width: 70%;
+    max-width: 90%;
     position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -1008,6 +1047,12 @@
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 25px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.2;
+    max-width: 100%;
+    text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -1017,11 +1062,26 @@
     }
 }
 
+/* Responsive font sizing for very long words */
+.instagram-style .english-word {
+    font-size: clamp(24px, 7vw, 36px);
+}
+
+@media (min-width: 768px) {
+    .instagram-style .english-word {
+        font-size: clamp(22px, 3.5vw, 32px);
+    }
+}
+
 .instagram-style .english-sentence {
     font-size: 20px;
     line-height: 1.6;
     color: var(--text-secondary);
-    max-width: 70%;
+    max-width: 90%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: center;
 }
 
 @media (min-width: 768px) {

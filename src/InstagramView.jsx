@@ -48,7 +48,9 @@ const InstagramView = () => {
 
   // Core application state
   const [words, setWords] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [isFlipped, setIsFlipped] = useState(false);
   const [studyMode, setStudyMode] = useState(() => {
     // Load study mode from localStorage or default to "random"
@@ -59,15 +61,15 @@ const InstagramView = () => {
   const [theme, setTheme] = useState("light");
   const [filteredWords, setFilteredWords] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("alphabetical");
+  const [sortBy] = useState("alphabetical"); // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const [sessionStartTime, setSessionStartTime] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [sessionStats, setSessionStats] = useState({
     wordsStudied: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
   });
-  const [cardHistory, setCardHistory] = useState([]);
-  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(-1);
   
   // Load and migrate data from localStorage on startup
   useEffect(() => {
@@ -323,6 +325,44 @@ const InstagramView = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const animationTimeoutRef = useRef(null);
   
+  // Prevent body scrolling when settings panel is open
+  useEffect(() => {
+    if (isSettingsPanelOpen) {
+      // Add class to prevent body scrolling
+      document.body.classList.add('settings-open');
+      // Store original overflow style
+      const originalStyle = document.body.style.overflow;
+      
+      return () => {
+        // Clean up when component unmounts or settings close
+        document.body.classList.remove('settings-open');
+        document.body.style.overflow = originalStyle;
+      };
+    } else {
+      // Remove class when settings close
+      document.body.classList.remove('settings-open');
+    }
+  }, [isSettingsPanelOpen]);
+
+  // Prevent body scrolling when browse page is open
+  useEffect(() => {
+    if (isBrowsePageOpen) {
+      // Add class to prevent body scrolling
+      document.body.classList.add('browse-open');
+      // Store original overflow style
+      const originalStyle = document.body.style.overflow;
+      
+      return () => {
+        // Clean up when component unmounts or browse page closes
+        document.body.classList.remove('browse-open');
+        document.body.style.overflow = originalStyle;
+      };
+    } else {
+      // Remove class when browse page closes
+      document.body.classList.remove('browse-open');
+    }
+  }, [isBrowsePageOpen]);
+  
   // Mark card as viewed (moves from fresh to in-progress)
   const markCardAsViewed = useCallback((wordId) => {
     setWords(prevWords => 
@@ -427,6 +467,7 @@ const InstagramView = () => {
         }, 500);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [studyMode, updateWordWithSRS, visibleCardId, filteredWords]
   );
 
@@ -503,9 +544,6 @@ const InstagramView = () => {
     }
   }, [createInitialWords]);
 
-  // Find the currently visible card object
-  const currentCard = filteredWords.find(card => card.id === visibleCardId) || filteredWords[0];
-  
   // Get current card index for navigation
   const getCurrentCardIndex = () => {
     if (!filteredWords.length || !visibleCardId) return -1;
@@ -659,6 +697,11 @@ const InstagramView = () => {
     if (!container) return;
 
     const handleTouchStartNonPassive = (e) => {
+      // Don't handle touch events when modals are open
+      if (isSettingsPanelOpen || isBrowsePageOpen) {
+        return;
+      }
+      
       // Only prevent default for significant swipes, allow taps to work
       const startTime = Date.now();
       setTouchStart({
@@ -672,6 +715,11 @@ const InstagramView = () => {
     };
 
     const handleTouchMoveNonPassive = (e) => {
+      // Don't handle touch events when modals are open
+      if (isSettingsPanelOpen || isBrowsePageOpen) {
+        return;
+      }
+      
       if (!touchStart.x && !touchStart.y) return;
       
       const currentY = e.targetTouches[0].clientY;
@@ -729,6 +777,11 @@ const InstagramView = () => {
     };
 
     const handleTouchEndNonPassive = () => {
+      // Don't handle touch events when modals are open
+      if (isSettingsPanelOpen || isBrowsePageOpen) {
+        return;
+      }
+      
       const endTime = Date.now();
       const touchDuration = endTime - (touchStart.time || 0);
       const deltaY = touchEnd.y - touchStart.y;
@@ -783,6 +836,7 @@ const InstagramView = () => {
       container.removeEventListener('touchmove', handleTouchMoveNonPassive);
       container.removeEventListener('touchend', handleTouchEndNonPassive);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [touchStart, touchEnd, navigateNext, navigatePrevious]);
   
   // Set up intersection observers for each card
@@ -834,9 +888,6 @@ const InstagramView = () => {
   };
   
   // Touch event handlers are now handled in useEffect with non-passive listeners
-  
-  // Check if current card is flipped
-  const isCurrentCardFlipped = visibleCardId ? flippedCards.has(visibleCardId) : false;
   
   // Handle key presses (maintain keyboard shortcuts)
   useEffect(() => {
@@ -893,6 +944,7 @@ const InstagramView = () => {
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleQualityOrStatusRating, resetCardToLearning, handleCardFlip, isSettingsPanelOpen, isBrowsePageOpen, navigateNext, navigatePrevious]);
 
   // Cleanup animation timeout on unmount

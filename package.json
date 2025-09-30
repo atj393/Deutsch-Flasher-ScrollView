@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "license": "SEE LICENSE IN LICENSE",
-  "author": "Alexis T. Jackson (atj393)",
+  "author": "Alexis Toby Johnson (atj393)",
   "description": "Instagram-style German learning app with 2000+ curated vocabulary words and intelligent SRS algorithm",
   "keywords": ["german", "language-learning", "flashcards", "srs", "education", "vocabulary"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/atj393/Deutsch-Flasher-ScrollView.git"
+    "url": "https://github.com/atj393/flashcard-deutscher-scroller"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -19,11 +19,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "preview": "npm run build && npx serve -s build",
-    "deploy": "npm run build"
+    "serve": "npx serve -s build"
   },
   "homepage": ".",
   "eslintConfig": {
