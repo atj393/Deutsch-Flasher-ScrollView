@@ -1,5 +1,5 @@
 // src/components/FullScreenCard.jsx
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 
 const FullScreenCard = ({ 
   card, 
@@ -9,8 +9,6 @@ const FullScreenCard = ({
   onRate, 
   onReset 
 }) => {
-  const touchStart = useRef(null);
-  const touchEnd = useRef(null);
 
   const handleCardClick = (e) => {
     // Only flip if clicking directly on card content areas, not buttons
@@ -19,19 +17,6 @@ const FullScreenCard = ({
     if (!isButtonClick) {
       onFlip();
     }
-  };
-
-  // Touch gesture handlers disabled - using main navigation swipe instead
-  const handleTouchStart = (e) => {
-    // Disabled to prevent conflicts with main navigation
-  };
-
-  const handleTouchMove = (e) => {
-    // Disabled to prevent conflicts with main navigation
-  };
-
-  const handleTouchEnd = () => {
-    // Disabled to prevent conflicts with main navigation
   };
 
   return (

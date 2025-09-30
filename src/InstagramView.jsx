@@ -4,9 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import {
   calculateNextInterval,
   calculateNextReviewDate,
-  getCardStats,
-  getDueCards,
-  isCardDue,
 } from "./srsAlgorithm";
 import './InstagramView.css';
 import './components/BrowsePage.css';
