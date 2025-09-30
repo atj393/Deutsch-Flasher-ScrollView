@@ -1,0 +1,100 @@
+MIT License with Additional Terms for Educational Content
+
+Copyright (c) 2025 Alexis T. Jackson (atj393)
+
+## Software License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Educational Content License (Restrictive)
+
+### German Vocabulary Dataset (`src/data/initialWords.json`)
+
+The German vocabulary dataset contained in this project, including but not limited to:
+- German words and their translations
+- Example sentences and their meanings
+- Curated vocabulary collections
+- Language learning content structure
+
+Is protected under the following additional terms:
+
+**PERMITTED USES:**
+- ✅ Personal learning and education
+- ✅ Academic research and study
+- ✅ Non-commercial educational projects
+- ✅ Contributing improvements back to this project
+- ✅ Creating derivatives for personal use
+
+**PROHIBITED USES:**
+- ❌ Commercial use without explicit written permission
+- ❌ Redistribution in commercial language learning applications
+- ❌ Selling or monetizing the vocabulary content
+- ❌ Creating competing commercial products using this dataset
+- ❌ Removing attribution or copyright notices
+- ❌ Claiming ownership of the vocabulary compilation
+
+### Commercial Use Permission
+
+If you wish to use the vocabulary dataset for commercial purposes, please contact:
+- Email: [Your Email]
+- GitHub: @atj393
+
+We are open to licensing arrangements for legitimate educational businesses and applications.
+
+### Attribution Requirements
+
+Any use of this vocabulary dataset must include clear attribution:
+
+```
+German vocabulary dataset courtesy of Deutsch Flasher project
+by Alexis T. Jackson (https://github.com/atj393/Deutsch-Flasher-ScrollView)
+```
+
+### Enforcement
+
+Violation of these terms may result in:
+- Takedown requests
+- Legal action for copyright infringement
+- Loss of permission to use any part of this project
+
+### Why This License?
+
+This project represents significant effort in:
+- Curating 2000+ high-quality German vocabulary words
+- Creating contextual example sentences
+- Developing intelligent spaced repetition algorithms
+- Building a complete learning platform
+
+We want to encourage learning and open-source contribution while protecting against commercial exploitation of our educational content.
+
+---
+
+## Summary
+
+**For Developers:** Feel free to use, modify, and learn from the code under MIT license.
+
+**For Educators:** Use the vocabulary for personal and non-commercial educational purposes.
+
+**For Businesses:** Contact us for commercial licensing of the vocabulary dataset.
+
+**For Learners:** Enjoy learning German with our carefully curated content!
+
+---
+
+*Last updated: September 30, 2025*

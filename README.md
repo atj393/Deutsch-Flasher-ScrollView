@@ -224,9 +224,41 @@ We welcome contributions to improve Deutsch Flasher:
 4. Test thoroughly on mobile and desktop
 5. Submit a pull request with detailed description
 
-## 📄 License
+## 📄 License & Usage Rights
 
-This project is open source and available under the [MIT License](LICENSE).
+### 🔓 **Software Code (MIT License)**
+The application code, components, and algorithms are available under the **MIT License** - feel free to use, modify, and learn from the code for any purpose.
+
+### 📚 **German Vocabulary Dataset (Restricted)**
+The 2000+ German vocabulary dataset (`src/data/initialWords.json`) is protected under **additional licensing terms**:
+
+#### ✅ **PERMITTED USES:**
+- **Personal Learning**: Use for your own German language study
+- **Educational Projects**: Non-commercial educational applications  
+- **Academic Research**: Study and research purposes
+- **Contributing**: Improvements back to this project
+
+#### ❌ **PROHIBITED USES:**
+- **Commercial Products**: Cannot be used in commercial language learning apps
+- **Resale/Redistribution**: Cannot be sold or redistributed commercially
+- **Competitive Products**: Cannot be used to create competing commercial platforms
+- **Attribution Removal**: Must maintain copyright notices
+
+#### 💼 **Commercial Licensing Available**
+Interested in using our vocabulary dataset commercially? We offer licensing for:
+- Educational technology companies
+- Language learning platforms  
+- Corporate training applications
+
+**Contact**: @atj393 on GitHub for commercial licensing inquiries.
+
+#### 📝 **Attribution Required**
+Any use must include: *"German vocabulary dataset courtesy of Deutsch Flasher project by Alexis T. Jackson"*
+
+### 🛡️ **Why This Approach?**
+This vocabulary dataset represents significant effort in curating high-quality German learning content. We want to encourage learning and education while protecting against commercial exploitation.
+
+**Full license details**: See [LICENSE](LICENSE) file.
 
 ## 🎯 Future Roadmap
 
