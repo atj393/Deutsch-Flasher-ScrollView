@@ -1198,20 +1198,30 @@ body.browse-open .instagram-view-container {
     }
 }
 
-.insta-card-controls .card-rating-btn.active {
-    background-color: var(--accent-color);
-}
-
-.insta-card-controls .card-rating-btn.active .material-icons {
-    color: white;
-}
-
+/* Default state: white icons */
 .insta-card-controls .rating-up .material-icons {
-    color: var(--btn-success);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .insta-card-controls .rating-down .material-icons {
-    color: var(--btn-danger);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Active state: green/red icons with colored background */
+.insta-card-controls .rating-up.active {
+    background-color: var(--btn-success);
+}
+
+.insta-card-controls .rating-up.active .material-icons {
+    color: white;
+}
+
+.insta-card-controls .rating-down.active {
+    background-color: var(--btn-danger);
+}
+
+.insta-card-controls .rating-down.active .material-icons {
+    color: white;
 }
 
 .insta-card-controls .flip-btn .material-icons {
@@ -1279,6 +1289,24 @@ body.browse-open .instagram-view-container {
 .dark .insta-card-controls .card-rating-btn {
     background-color: rgba(30, 41, 59, 0.95);
     color: var(--text-primary);
+}
+
+/* Dark mode rating button icons - default white */
+.dark .insta-card-controls .rating-up .material-icons {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.dark .insta-card-controls .rating-down .material-icons {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dark mode active states */
+.dark .insta-card-controls .rating-up.active {
+    background-color: var(--btn-success);
+}
+
+.dark .insta-card-controls .rating-down.active {
+    background-color: var(--btn-danger);
 }
 
 .dark .scroll-indicator .material-icons {

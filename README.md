@@ -1,8 +1,8 @@
-# 🇩🇪 Deutsch Flasher - Modern German Learning App
+# 🇩🇪 Flashcard Deutscher - Modern German Learning App
 
 **Instagram-Style Mobile-First German Flashcard Application with Advanced SRS Intelligence**
 
-Deutsch Flasher is a modern, mobile-optimized flashcard application featuring over **2,000 German words** with intelligent spaced repetition, multiple study modes, and a sleek Instagram-inspired interface designed for effective German language learning.
+Flashcard Deutscher is a modern, mobile-optimized flashcard application featuring over **2,000 German words** with intelligent spaced repetition, multiple study modes, and a sleek Instagram-inspired interface designed for effective German language learning.
 
 ## ✨ Key Features
 
@@ -208,7 +208,7 @@ Each flashcard contains comprehensive learning metadata:
 
 ## 🤝 Contributing
 
-We welcome contributions to improve Deutsch Flasher:
+We welcome contributions to improve Flashcard Deutscher:
 
 ### Areas for Contribution
 - **New Features**: Additional study modes, gamification, audio support
@@ -253,7 +253,7 @@ Interested in using our vocabulary dataset commercially? We offer licensing for:
 **Contact**: @atj393 on GitHub for commercial licensing inquiries.
 
 #### 📝 **Attribution Required**
-Any use must include: *"German vocabulary dataset courtesy of Deutsch Flasher project by Alexis T. Jackson"*
+Any use must include: *"German vocabulary dataset courtesy of Flashcard Deutscher project by Alexis T. Jackson"*
 
 ### 🛡️ **Why This Approach?**
 This vocabulary dataset represents significant effort in curating high-quality German learning content. We want to encourage learning and education while protecting against commercial exploitation.
@@ -282,7 +282,7 @@ This vocabulary dataset represents significant effort in curating high-quality G
 
 ---
 
-**Deutsch Flasher** - Experience the future of German language learning with intelligent SRS, beautiful design, and comprehensive progress tracking. 🚀
+**Flashcard Deutscher** - Experience the future of German language learning with intelligent SRS, beautiful design, and comprehensive progress tracking. 🚀
 
 *Built with ❤️ for German language learners worldwide.*
 

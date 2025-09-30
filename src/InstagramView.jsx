@@ -70,6 +70,9 @@ const InstagramView = () => {
     correctAnswers: 0,
     wrongAnswers: 0,
   });
+
+  // Prevent double-click ratings
+  const lastRatingTime = useRef(0);
   
   // Load and migrate data from localStorage on startup
   useEffect(() => {
@@ -168,6 +171,15 @@ const InstagramView = () => {
       // If no prioritized cards, fall back to all cards
       if (filtered.length === 0) {
         filtered = words.sort(() => Math.random() - 0.5);
+      }
+      
+      // Always ensure we have all cards available in random mode for continuous learning
+      // Add any missing cards that weren't included in priorities
+      const includedIds = new Set(filtered.map(card => card.id));
+      const missingCards = words.filter(word => !includedIds.has(word.id));
+      if (missingCards.length > 0) {
+        // Add missing cards with lower priority (at the end)
+        filtered = [...filtered, ...missingCards.sort(() => Math.random() - 0.5)];
       }
     } else if (studyMode === "new") {
       // New Words: Pure new cards + SRS priority for unrated cards
@@ -274,6 +286,15 @@ const InstagramView = () => {
     }
 
     setFilteredWords(filtered);
+
+    // Ensure visible card is still valid after filtering
+    if (filtered.length > 0) {
+      const currentCardExists = filtered.some(card => card.id === visibleCardId);
+      if (!currentCardExists) {
+        console.log('⚠️ Current card no longer in filtered list, switching to first available card');
+        setVisibleCardId(filtered[0].id);
+      }
+    }
 
     // Update stats whenever words or filtering changes
     const today = new Date();
@@ -447,6 +468,15 @@ const InstagramView = () => {
   // Handle quality rating and status setting with toggle support
   const handleQualityOrStatusRating = useCallback(
     (quality) => {
+      // Prevent double-clicks within 1000ms
+      const now = Date.now();
+      if (now - lastRatingTime.current < 1000) {
+        console.log('⚠️ Rating blocked - too fast! Time since last:', now - lastRatingTime.current, 'ms');
+        return;
+      }
+      lastRatingTime.current = now;
+      console.log('✅ Processing rating:', quality);
+
       const currentCard = filteredWords.find(card => card.id === visibleCardId) || filteredWords[0];
       if (!currentCard) return;
 
@@ -460,12 +490,8 @@ const InstagramView = () => {
         wrongAnswers: prev.wrongAnswers + (quality < 1 ? 1 : 0),
       }));
 
-      // Auto-navigation in study modes (not browse mode)
-      if (studyMode !== "browse") {
-        setTimeout(() => {
-          navigateNext();
-        }, 500);
-      }
+      // No auto-navigation - stay on current card
+      // The card will update its visual state to show the new rating
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [studyMode, updateWordWithSRS, visibleCardId, filteredWords]
@@ -548,6 +574,16 @@ const InstagramView = () => {
   const getCurrentCardIndex = () => {
     if (!filteredWords.length || !visibleCardId) return -1;
     return filteredWords.findIndex(card => card.id === visibleCardId);
+  };
+
+  // Get learning progress (how many cards have been studied at least once)
+  const getLearningProgress = () => {
+    if (!words.length) return { studied: 0, total: words.length };
+    const studiedCards = words.filter(word => word.totalReviews > 0);
+    return { 
+      studied: studiedCards.length, 
+      total: words.length 
+    };
   };
   
   // Complete swipe animation after touch ends
@@ -1086,12 +1122,20 @@ const InstagramView = () => {
       {/* Card Progress Indicator */}
       <div className="card-progress-indicator">
         <span className="progress-text">
-          {getCurrentCardIndex() + 1} / {filteredWords.length}
+          {studyMode === "random" ? (
+            `${getLearningProgress().studied} / ${getLearningProgress().total}`
+          ) : (
+            `${getCurrentCardIndex() + 1} / ${filteredWords.length}`
+          )}
         </span>
         <div className="progress-bar">
           <div 
             className="progress-fill"
-            style={{ width: `${((getCurrentCardIndex() + 1) / filteredWords.length) * 100}%` }}
+            style={{ 
+              width: studyMode === "random" 
+                ? `${(getLearningProgress().studied / getLearningProgress().total) * 100}%`
+                : `${((getCurrentCardIndex() + 1) / filteredWords.length) * 100}%`
+            }}
           />
         </div>
       </div>

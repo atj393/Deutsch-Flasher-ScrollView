@@ -1,4 +1,4 @@
-# Deutsch Flasher - Developer & Agent Instructions
+# Flashcard Deutscher - Developer & Agent Instructions
 
 **Advanced Instagram-Style German Learning Platform with Intelligent SRS**
 

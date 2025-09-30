@@ -2,7 +2,7 @@
  * GERMAN VOCABULARY DATASET - COPYRIGHT NOTICE
  * 
  * File: initialWords.json
- * Project: Deutsch Flasher - German Learning Application
+ * Project: Flashcard Deutscher - German Learning Application
  * Copyright (c) 2025 Alexis T. Jackson (atj393)
  * 
  * This vocabulary dataset contains 2000+ carefully curated German words
@@ -20,6 +20,6 @@
  * Full license terms: ../../../LICENSE
  * 
  * ATTRIBUTION REQUIRED:
- * "German vocabulary dataset courtesy of Deutsch Flasher project 
+ * "German vocabulary dataset courtesy of Flashcard Deutscher project 
  *  by Alexis T. Jackson (https://github.com/atj393/Deutsch-Flasher-ScrollView)"
  */
