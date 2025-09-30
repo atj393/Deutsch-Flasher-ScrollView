@@ -287,13 +287,10 @@ const InstagramView = () => {
 
     setFilteredWords(filtered);
 
-    // Ensure visible card is still valid after filtering
-    if (filtered.length > 0) {
-      const currentCardExists = filtered.some(card => card.id === visibleCardId);
-      if (!currentCardExists) {
-        console.log('⚠️ Current card no longer in filtered list, switching to first available card');
-        setVisibleCardId(filtered[0].id);
-      }
+    // DON'T auto-switch cards - let user navigate manually
+    // Only set initial card if no card is selected
+    if (!visibleCardId && filtered.length > 0) {
+      setVisibleCardId(filtered[0].id);
     }
 
     // Update stats whenever words or filtering changes
@@ -468,9 +465,9 @@ const InstagramView = () => {
   // Handle quality rating and status setting with toggle support
   const handleQualityOrStatusRating = useCallback(
     (quality) => {
-      // Prevent double-clicks within 1000ms
+      // Prevent double-clicks within 300ms (reduced from 1000ms)
       const now = Date.now();
-      if (now - lastRatingTime.current < 1000) {
+      if (now - lastRatingTime.current < 300) {
         console.log('⚠️ Rating blocked - too fast! Time since last:', now - lastRatingTime.current, 'ms');
         return;
       }
@@ -588,31 +585,18 @@ const InstagramView = () => {
   
   // Complete swipe animation after touch ends
   const completeSwipeAnimation = (direction) => {
-    if (!nextCardId || !filteredWords.length) return;
-    
-    const targetCard = filteredWords.find(card => card.id === nextCardId);
-    if (!targetCard) return;
-    
     // Set final transform positions for smooth completion
     const finalTransform = direction === 'next' ? -window.innerHeight : window.innerHeight;
     setCurrentTransform(finalTransform);
     
     // Switch to the new card after animation completes
     animationTimeoutRef.current = setTimeout(() => {
-      setVisibleCardId(nextCardId);
-      
-      // Update parent component's current card index
-      const newIndex = filteredWords.findIndex(card => card.id === nextCardId);
-      if (setCurrentCardIndex && newIndex >= 0) {
-        setCurrentCardIndex(newIndex);
+      // Simply call the navigation functions - they handle everything
+      if (direction === 'next') {
+        navigateNext();
+      } else {
+        navigatePrevious();
       }
-      
-      // Reset flip state for new card
-      setFlippedCards(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(nextCardId);
-        return newSet;
-      });
       
       // Reset animation state
       setCurrentTransform(0);
@@ -620,7 +604,7 @@ const InstagramView = () => {
       setSwipeDirection(null);
       setIsAnimating(false);
       
-      console.log('Navigated to card:', targetCard.word);
+      console.log('Navigated via swipe:', direction);
     }, 350); // Match CSS transition duration
   };
   
@@ -659,25 +643,35 @@ const InstagramView = () => {
   
   // Navigate to next card
   const navigateNext = () => {
-    const currentIndex = getCurrentCardIndex();
-    console.log('navigateNext called - current index:', currentIndex, 'total cards:', filteredWords.length);
-    if (currentIndex < filteredWords.length - 1) {
-      navigateToCard(currentIndex + 1, 'next');
+    // Use the most current words array to ensure navigation always works
+    const wordsToUse = words.length > 0 ? words : filteredWords;
+    if (wordsToUse.length === 0) return;
+    
+    const currentIndex = wordsToUse.findIndex(card => card.id === visibleCardId);
+    console.log('navigateNext called - current index:', currentIndex, 'total cards:', wordsToUse.length);
+    
+    if (currentIndex >= 0 && currentIndex < wordsToUse.length - 1) {
+      setVisibleCardId(wordsToUse[currentIndex + 1].id);
     } else {
       // Loop back to first card
-      navigateToCard(0, 'next');
+      setVisibleCardId(wordsToUse[0].id);
     }
   };
   
   // Navigate to previous card
   const navigatePrevious = () => {
-    const currentIndex = getCurrentCardIndex();
-    console.log('navigatePrevious called - current index:', currentIndex, 'total cards:', filteredWords.length);
+    // Use the most current words array to ensure navigation always works
+    const wordsToUse = words.length > 0 ? words : filteredWords;
+    if (wordsToUse.length === 0) return;
+    
+    const currentIndex = wordsToUse.findIndex(card => card.id === visibleCardId);
+    console.log('navigatePrevious called - current index:', currentIndex, 'total cards:', wordsToUse.length);
+    
     if (currentIndex > 0) {
-      navigateToCard(currentIndex - 1, 'previous');
+      setVisibleCardId(wordsToUse[currentIndex - 1].id);
     } else {
       // Loop to last card
-      navigateToCard(filteredWords.length - 1, 'previous');
+      setVisibleCardId(wordsToUse[wordsToUse.length - 1].id);
     }
   };
   
@@ -1040,8 +1034,16 @@ const InstagramView = () => {
       
       {/* Current Card with Real-time Transform */}
       {(() => {
-        const activeCard = filteredWords.find(card => card.id === visibleCardId);
-        if (!activeCard) return null;
+        // Always show the current card, even if it's not in the filtered list anymore
+        const activeCard = words.find(card => card.id === visibleCardId) || filteredWords[0];
+        if (!activeCard) {
+          return (
+            <div className="no-cards-message">
+              <p>No cards available for this study mode.</p>
+              <p>Try a different study mode or add some cards!</p>
+            </div>
+          );
+        }
         
         const cardStyle = {
           transform: `translateY(${currentTransform}px)`,

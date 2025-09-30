@@ -1192,6 +1192,12 @@ body.browse-open .instagram-view-container {
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
 }
 
+.insta-card-controls .card-rating-btn:disabled {
+    opacity: 0.6;
+    transform: none !important;
+    pointer-events: none;
+}
+
 @media (min-width: 768px) {
     .insta-card-controls .card-rating-btn:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -1521,4 +1527,21 @@ body.browse-open .instagram-view-container {
 
 .section-desc {
     color: var(--settings-text-secondary) !important;
+}
+
+/* No cards message */
+.no-cards-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2rem;
+}
+
+.no-cards-message p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
 }
